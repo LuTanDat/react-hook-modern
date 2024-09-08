@@ -7,16 +7,23 @@ import DisplayInfo from "./DisplayInfo";
 
 class MyComponent extends React.Component {
 
+  state = {
+    listUsers: [
+      { id: 1, name: "John", age: 10 },
+      { id: 1, name: "John 1", age: 20 },
+      { id: 1, name: "John 2", age: 35 },
+    ]
+  }
+
   //JSX
   render() {
-    const myInfo = ['agdf', 'daf', 'd']
     return (
       <>
         <h1>Hello, world!</h1>
         <hr />
         <UserInfo />
         <hr />
-        <DisplayInfo name={'tan dat'} age={24} myInfo={myInfo} />
+        <DisplayInfo listUsers={this.state.listUsers} />
       </>
     )
   }
