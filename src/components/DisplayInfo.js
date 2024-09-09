@@ -9,19 +9,35 @@ import logo from '../logo.svg'
 class DisplayInfo extends React.Component {
 
   // cách chuẩn OOP
-  // constructor(props) {
-  //   super(props)
-  //   // babel compiler
-  //   this.state = {
-  //     isShowAllUser: true
-  //   }
-  // }
-
-  // cách ngắn gọn
-  state = {
-    isShowAllUser: true
+  constructor(props) {
+    console.log('>>> check constructor: ')
+    super(props)
+    // babel compiler
+    this.state = {
+      isShowAllUser: true
+    }
   }
 
+  // cách ngắn gọn
+  // state = {
+  //   isShowAllUser: true
+  // }
+
+  componentDidMount = () => {
+    console.log('>>> check component did mount: ')
+    setTimeout(() => {
+      document.title = 'lu dat'
+    }, 3000)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('>>> check component did update: ', this.props, prevProps)
+    if (this.props.listUsers !== prevProps.listUsers) {
+      if (this.props.listUsers.length >= 5) {
+        alert('You are reached 5 user')
+      }
+    }
+  }
 
   handleShowHide = () => {
     this.setState({
@@ -30,7 +46,8 @@ class DisplayInfo extends React.Component {
   }
 
   render() {
-    console.log(this.props)
+    console.log('>>> check render: ')
+    // console.log(this.props)
     const { listUsers } = this.props//object
     return (
       <div className="display-info-container">
