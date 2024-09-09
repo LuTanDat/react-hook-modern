@@ -3,9 +3,20 @@ import './scss/DisplayInfo.scss'
 import logo from '../logo.svg'
 class DisplayInfo extends React.Component {
 
+  // cách chuẩn OOP
+  // constructor(props) {
+  //   super(props)
+  //   // babel compiler
+  //   this.state = {
+  //     isShowAllUser: true
+  //   }
+  // }
+
+  // cách ngắn gọn
   state = {
     isShowAllUser: true
   }
+
 
   handleShowHide = () => {
     this.setState({
