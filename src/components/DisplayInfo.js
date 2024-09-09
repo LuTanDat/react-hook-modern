@@ -1,6 +1,11 @@
 import React from "react";
 import './scss/DisplayInfo.scss'
 import logo from '../logo.svg'
+
+// ảnh ko đc để trong folder Public vì giảm hiệu năng ứng dụng => ảnh nên để thư mục khác or lưu ở phía Backend
+// do khi ứng dụng chạy nó sẽ bỏ qua folder Public, 
+// mà đọc qua src trước => quăng nội dung trong src vào folder Public
+// Khi cần ứng dụng mới mò lại trong folder Public, gây giảm hiệu năng ứng dụng
 class DisplayInfo extends React.Component {
 
   // cách chuẩn OOP
