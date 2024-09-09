@@ -36,7 +36,7 @@ class MyComponent extends React.Component {
         <h1>Hello, world!</h1>
         <hr />
         <AddUserInfo
-          handleAddNewUser={this.handleAddNewUser}// truyen func cho con, ko goi truc tiep
+          handleAddNewUser={this.handleAddNewUser}// truyen tham chiếu func cho con, ko goi no
         />
         <hr />
         <DisplayInfo
