@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './scss/DisplayInfo.scss'
 import logo from '../logo.svg'
 
@@ -86,8 +86,17 @@ const DisplayInfo = (props) => {
 
   const [isShowHideListUsers, setShowHideListUsers] = useState(true);
 
+
+  useEffect(() => { // thay the cho componentDidMount, componentDidUpdate
+    if (listUsers.length === 0) {
+      alert('you deleted all user')
+    }
+    console.log('call me useEffect')
+  }, [listUsers])
+
   return (
     <div className="display-info-container">
+      {console.log('call me render')}
       <div>
         <span onClick={() => setShowHideListUsers(!isShowHideListUsers)}
         >{isShowHideListUsers ? 'Hide list users' : 'Show list users'}</span>
