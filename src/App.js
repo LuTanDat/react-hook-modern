@@ -16,11 +16,6 @@ const App = () => {
           <Outlet />
         </div>
       </div>
-
-      {/* <div>
-        <button><Link to="/users">User</Link></button>
-        <button><Link to="/admin">Admin</Link></button>
-      </div> */}
     </div>
   );
 }
