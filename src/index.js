@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import User from './components/User/User';
 import Admin from './components/Admin/Admin';
+import Home from './components/Home/Home';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -20,6 +21,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}> {/*Nested Routes */}
+          <Route index element={<Home />} />
           <Route path="users" element={<User />} />
           <Route path="admin" element={<Admin />} />
         </Route>
