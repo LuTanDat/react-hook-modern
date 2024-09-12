@@ -1,19 +1,19 @@
-import logo from './logo.svg';
-import './App.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { increaseCounter, decreaseCounter } from './redux/action/counterAction';
-import MyComponent from './components/MyComponent';
+// import logo from './logo.svg';
+// import './App.scss';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { increaseCounter, decreaseCounter } from './redux/action/counterAction';
+// import MyComponent from './components/MyComponent';
 
-import React from 'react';
-class App extends React.Component {
-  render() {
-    return (
-      <div className='app-container'>
-        <MyComponent />
-      </div>
-    );
-  }
-}
+// import React from 'react';
+// class App extends React.Component {
+//   render() {
+//     return (
+//       <div className='app-container'>
+//         <MyComponent />
+//       </div>
+//     );
+//   }
+// }
 
 // const App = () => {
 //   const count = useSelector(state => state.counter.count);
@@ -34,5 +34,16 @@ class App extends React.Component {
 //   );
 // }
 
+//-------------------------------------------------------------------------------
+import './App.scss';
+
+const App = () => {
+
+  return (
+    <div className="app-container">
+      Hello world!
+    </div>
+  );
+}
 
 export default App;
