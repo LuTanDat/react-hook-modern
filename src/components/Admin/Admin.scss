@@ -44,7 +44,16 @@ $highlight-color: #dee2ec;
 
   .admin-content {
     padding: 20px;
-    display: flex;
-    gap    : 15px;
+    width  : 100%;
+
+    .admin-header {
+      height: 40px;
+      border: 1px solid green;
+    }
+
+    .admin-main {
+      border    : 1px solid red;
+      min-height: 200px;
+    }
   }
 }
