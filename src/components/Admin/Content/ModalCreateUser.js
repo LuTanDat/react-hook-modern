@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { postAddNewUsers } from '../../../services/apiServices';
 
 const ModalCreateUser = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchListUsers } = props;
 
   const handleClose = () => {
     setShow(false)
@@ -44,7 +44,6 @@ const ModalCreateUser = (props) => {
   };
 
   const handleSubmitCreateNewUser = async () => {
-
     const isValidEmail = validateEmail(email)
     if (!isValidEmail) {
       toast.error('invalid email')
@@ -55,12 +54,12 @@ const ModalCreateUser = (props) => {
       return;
     }
 
-
     let data = await postAddNewUsers(email, password, username, role, image);
     console.log('>>> check res component: ', data);
     if (data && data.EC === 0) {
       toast.success(data.EM)
       handleClose()
+      await fetchListUsers()
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM)
