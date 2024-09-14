@@ -5,11 +5,20 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import imagePreview from '../../../assets/bg2.jpg';
 import { FcPlus } from "react-icons/fc";
+import axios from 'axios';
 
-const ModalCreateUser = () => {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+const ModalCreateUser = (props) => {
+  const { show, setShow } = props;
+
+  const handleClose = () => {
+    setShow(false)
+    setEmail('')
+    setPassword('')
+    setUsername('')
+    setRole('USER')
+    setImage('')
+    setPreviewImg('')
+  };
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,20 +28,35 @@ const ModalCreateUser = () => {
   const [previewImg, setPreviewImg] = useState('');
 
   const handleUploadFile = (e) => {
-    // console.log('upload file', URL.createObjectURL(e.target.files[0]));
     if (e.target && e.target.files && e.target.files[0]) { // co chon file de upload
       setPreviewImg(URL.createObjectURL(e.target.files[0]))
       setImage(e.target.files[0])
-    } else {
-      // setPreviewImg(''); // mo xong dong, khong chon file
     }
   }
+
+  const handleSubmitCreateNewUser = async () => {
+    // let data = {
+    //   email: email,
+    //   password: password,
+    //   username: username,
+    //   role: role,
+    //   userImage: image,
+    // }
+    // console.log(data);
+
+    const data = new FormData();
+    data.append('email', email);
+    data.append('password', password);
+    data.append('username', username);
+    data.append('role', role);
+    data.append('userImage', image);
+
+    let res = await axios.post('http://localhost:8081/api/v1/participant', data)
+    console.log('>>> check res: ', res);
+  }
+
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add New User
-      </Button>
-
       <Modal
         show={show}
         onHide={handleClose}
@@ -104,7 +128,7 @@ const ModalCreateUser = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={() => handleSubmitCreateNewUser()}>
             Save
           </Button>
         </Modal.Footer>
