@@ -28,7 +28,11 @@ const putUpdateUser = (id, username, role, image) => {
   return axios.put('api/v1/participant', data)
 }
 
+// search: axios delete with url encoded
+const deleteUsers = (userId) => {
+  return axios.delete('api/v1/participant', { data: { id: userId } })
+}
 
 export {
-  postAddNewUsers, getAllUsers, putUpdateUser
+  postAddNewUsers, getAllUsers, putUpdateUser, deleteUsers
 }

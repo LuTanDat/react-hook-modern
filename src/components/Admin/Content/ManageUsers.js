@@ -6,6 +6,7 @@ import { getAllUsers } from "../../../services/apiServices";
 import ModalCreateUser from "./ModalCreateUser";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalDetailUser from "./ModalDetailUser";
+import ModalDeleteUser from './ModalDeleteUser';
 
 const ManageUsers = () => {
   const [show, setShow] = useState(false);
@@ -14,6 +15,10 @@ const ManageUsers = () => {
 
   const [showModelDetail, setShowModelDetail] = useState(false);
   const [dataDetail, setDataDetail] = useState({})
+
+  const [showModelDelete, setShowModelDelete] = useState(false);
+  const [dataDelete, setDataDelete] = useState({})
+
 
   const [listUsers, setListUsers] = useState([])
 
@@ -48,6 +53,12 @@ const ManageUsers = () => {
     setDataDetail({})
   }
 
+  const handleClickBtnDelete = (user) => {
+    setShowModelDelete(true);
+    setDataDelete(user)
+    console.log('>>>>  user:', user);
+  }
+
   return (
     <div className="manage-user-container">
       <div className="title">
@@ -66,6 +77,7 @@ const ManageUsers = () => {
             listUsers={listUsers}
             handleClickBtnUpdate={handleClickBtnUpdate}
             handleClickBtnDetail={handleClickBtnDetail}
+            handleClickBtnDelete={handleClickBtnDelete}
           />
         </div>
 
@@ -86,6 +98,12 @@ const ManageUsers = () => {
           setShow={setShowModelDetail}
           dataUpdate={dataDetail}
           resetUpdateData={resetDetailData}
+        />
+        <ModalDeleteUser
+          show={showModelDelete}
+          setShow={setShowModelDelete}
+          dataDelete={dataDelete}
+          fetchListUsers={fetchListUsers}
         />
       </div>
     </div>
