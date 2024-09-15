@@ -3,14 +3,11 @@
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import imagePreview from '../../../assets/bg2.jpg';
 import { FcPlus } from "react-icons/fc";
-import { toast } from 'react-toastify';
-import { postAddNewUsers, putUpdateUser } from '../../../services/apiServices';
 import _ from 'lodash'; // check array, object, variable
 
-const ModalUpdateUser = (props) => {
-  const { show, setShow, dataUpdate, resetUpdateData, fetchListUsers } = props;
+const ModalDetailUser = (props) => {
+  const { show, setShow, dataUpdate, resetUpdateData } = props;
 
   const handleClose = () => {
     setShow(false)
@@ -31,7 +28,7 @@ const ModalUpdateUser = (props) => {
   const [previewImg, setPreviewImg] = useState('');
 
   useEffect(() => {
-    // console.log('data update', dataUpdate);
+    // console.log('data detail', dataUpdate);
     if (!_.isEmpty(dataUpdate)) {
       // update state
       setEmail(dataUpdate.email)
@@ -52,20 +49,6 @@ const ModalUpdateUser = (props) => {
     }
   }
 
-  const handleSubmitCreateNewUser = async () => {
-
-    let data = await putUpdateUser(dataUpdate.id, username, role, image);
-    console.log('>>> check res component: ', data);
-    if (data && data.EC === 0) {
-      toast.success(data.EM)
-      handleClose()
-      await fetchListUsers()
-    }
-    if (data && data.EC !== 0) {
-      toast.error(data.EM)
-    }
-  }
-
   return (
     <>
       <Modal
@@ -76,7 +59,7 @@ const ModalUpdateUser = (props) => {
         className='model-add-user'
       >
         <Modal.Header closeButton>
-          <Modal.Title>Update a user</Modal.Title>
+          <Modal.Title>Detail a user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
@@ -107,6 +90,7 @@ const ModalUpdateUser = (props) => {
                 className="form-control"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                disabled
               />
             </div>
             <div className="col-md-4">
@@ -115,6 +99,7 @@ const ModalUpdateUser = (props) => {
                 className="form-select"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
+                disabled
               >
                 <option value='USER'>USER</option>
                 <option value='ADMIN'>ADMIN</option>
@@ -141,13 +126,10 @@ const ModalUpdateUser = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => handleSubmitCreateNewUser()}>
-            Save
-          </Button>
         </Modal.Footer>
       </Modal>
     </>
   );
 }
 
-export default ModalUpdateUser;
+export default ModalDetailUser;

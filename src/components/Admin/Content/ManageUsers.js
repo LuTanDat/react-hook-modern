@@ -1,15 +1,19 @@
-import ModalCreateUser from "./ModalCreateUser";
 import './ManageUsers.scss'
 import { FcPlus } from "react-icons/fc";
 import TableUser from "./TableUser";
 import { useEffect, useState } from "react";
-import { getAllUsers, updateAUsers } from "../../../services/apiServices";
+import { getAllUsers } from "../../../services/apiServices";
+import ModalCreateUser from "./ModalCreateUser";
 import ModalUpdateUser from "./ModalUpdateUser";
+import ModalDetailUser from "./ModalDetailUser";
 
 const ManageUsers = () => {
   const [show, setShow] = useState(false);
   const [showModel, setShowModel] = useState(false);
   const [dataUpdate, setDataUpdate] = useState({})
+
+  const [showModelDetail, setShowModelDetail] = useState(false);
+  const [dataDetail, setDataDetail] = useState({})
 
   const [listUsers, setListUsers] = useState([])
 
@@ -19,30 +23,29 @@ const ManageUsers = () => {
 
   const fetchListUsers = async () => {
     let res = await getAllUsers();
-    console.log(res.DT)
     if (res.EC === 0) {
       setListUsers(res.DT)
     }
-  }
-
-  const updateAUsers = async (id, username, role, userImage) => {
-    let res = await updateAUsers(id, username, role, userImage);
-    console.log(res)
-    // if (res.EC === 0) {
-    //   setListUsers(res.DT)
-    // }
   }
 
   const handleClickBtnUpdate = (user) => {
     setShowModel(true);
     setDataUpdate(user)
     console.log('>>>>  user:', user);
-
-    // fetchAUsers(id)
   }
 
   const resetUpdateData = () => {
     setDataUpdate({})
+  }
+
+  const handleClickBtnDetail = (user) => {
+    setShowModelDetail(true);
+    setDataDetail(user)
+    console.log('>>>>  user:', user);
+  }
+
+  const resetDetailData = () => {
+    setDataDetail({})
   }
 
   return (
@@ -62,6 +65,7 @@ const ManageUsers = () => {
           <TableUser
             listUsers={listUsers}
             handleClickBtnUpdate={handleClickBtnUpdate}
+            handleClickBtnDetail={handleClickBtnDetail}
           />
         </div>
 
@@ -74,8 +78,14 @@ const ManageUsers = () => {
           show={showModel}
           setShow={setShowModel}
           dataUpdate={dataUpdate}
-          resetUpdateData={resetUpdateData}
+          resetUpdateData={resetUpdateData} // dong modal tu reset lai data update
           fetchListUsers={fetchListUsers}
+        />
+        <ModalDetailUser
+          show={showModelDetail}
+          setShow={setShowModelDetail}
+          dataUpdate={dataDetail}
+          resetUpdateData={resetDetailData}
         />
       </div>
     </div>
