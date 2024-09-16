@@ -1,9 +1,22 @@
 .login-container {
   .header {
-    height    : 45px;
-    text-align: right;
+    height         : 45px;
+    display        : flex;
+    justify-content: end;
+    align-items    : center;
+    padding        : 0 100px;
 
-    border: 1px solid red;
+    button {
+      padding      : 3px 15px;
+      margin       : 0 15px;
+      border-radius: 5px;
+      background   : #f9f9f9;
+      border       : 1px solid;
+
+      &:hover {
+        background: white;
+      }
+    }
   }
 
   .title {
@@ -33,6 +46,14 @@
       margin       : 20px 0;
       color        : white;
       background   : black;
+    }
+
+    .forgot-password {
+      text-decoration: underline;
+    }
+
+    .back {
+      cursor: pointer;
     }
   }
 }
