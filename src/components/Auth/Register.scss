@@ -1,4 +1,4 @@
-.login-container {
+.register-container {
   .header {
     height         : 45px;
     display        : flex;
@@ -54,14 +54,10 @@
       .icon-eye {
         cursor   : pointer;
         position : absolute;
-        top      : 39px;
+        top      : 30px;
         right    : 15px;
         font-size: 20px;
       }
-    }
-
-    .forgot-password {
-      text-decoration: underline;
     }
 
     .back {

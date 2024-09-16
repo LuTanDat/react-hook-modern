@@ -12,6 +12,7 @@ import Home from './components/Home/Home';
 import Dashboard from './components/Admin/Content/Dashboard';
 import ManageUsers from './components/Admin/Content/ManageUsers';
 import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
 
 const Layout = () => {
   return (
@@ -28,6 +29,7 @@ const Layout = () => {
         </Route>
 
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
 
 

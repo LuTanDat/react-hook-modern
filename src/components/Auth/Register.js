@@ -1,15 +1,16 @@
-import './Login.scss'
+import './Register.scss'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postLogin } from '../../services/apiServices';
+import { postRegister } from '../../services/apiServices';
 import { toast } from 'react-toastify';
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate()
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (email) => {
@@ -20,7 +21,7 @@ const Login = () => {
       );
   };
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     // validate
     const isValidEmail = validateEmail(email)
     if (!isValidEmail) {
@@ -33,10 +34,10 @@ const Login = () => {
     }
 
     // submit apis
-    const data = await postLogin(email, password);
+    const data = await postRegister(email, username, password);
     if (data && data.EC === 0) {
       toast.success(data.EM)
-      navigate('/')
+      navigate('/login')
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM)
@@ -44,55 +45,69 @@ const Login = () => {
   }
 
   return (
-    <div className="login-container">
+    <div className="register-container">
       <div className="header">
         <span>Don't have an account yet?</span>
-        <button onClick={() => navigate('/register')}>Sign up</button>
+        <button onClick={() => navigate('/login')}>Log in</button>
         <span>Contact us</span>
       </div>
       <div className="title col-4 mx-auto">
-        LOGIN
+        REGISTER
       </div>
       <div className="wellcome col-4 mx-auto">
         Hello, who’s this?
       </div>
       <div className="content-form col-4 mx-auto">
         <div className="form-group">
-          <label>Email</label>
+          <label>Email (*)</label>
           <input
             type="email"
             className="form-control"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           >
           </input>
         </div>
         <div className="form-group pass-group">
-          <label>Password</label>
+          <label>Password (*)</label>
           <input
             type={showPassword ? 'text' : 'password'}
             className="form-control"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           >
           </input>
 
           {showPassword ?
-            <VscEye className='icon-eye'
-              onClick={() => setShowPassword(false)}
-            /> :
-            <VscEyeClosed className='icon-eye'
-              onClick={() => setShowPassword(true)}
-            />
+            <span className='icon-eye'
+              onClick={() => setShowPassword(false)}>
+              <VscEye />
+            </span>
+            :
+            <span className='icon-eye'
+              onClick={() => setShowPassword(true)}>
+              <VscEyeClosed />
+            </span>
           }
         </div>
-        <span className='forgot-password'>Forgot password?</span>
+        <div className="form-group">
+          <label>Username</label>
+          <input
+            type="text"
+            className="form-control"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          >
+          </input>
+        </div>
         <div>
-          <button className='btn-login' onClick={() => handleLogin()}>Login</button>
+          <button className='btn-register' onClick={() => handleRegister()}>Create my free account</button>
         </div>
         <div className='text-center'>
           <span className='back' onClick={() => navigate('/')}>
-            &#60;&#60; Go to Home page
+            &#60;&#60; Go to Login page
           </span>
         </div>
       </div>
@@ -100,4 +115,4 @@ const Login = () => {
   )
 }
 
-export default Login;
+export default Register;
