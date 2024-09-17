@@ -13,6 +13,7 @@ import Dashboard from './components/Admin/Content/Dashboard';
 import ManageUsers from './components/Admin/Content/ManageUsers';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
+import ListQuiz from './components/User/ListQuiz';
 
 const Layout = () => {
   return (
@@ -20,7 +21,7 @@ const Layout = () => {
       <Routes>
         <Route path="/" element={<App />}> {/*Nested Routes */}
           <Route index element={<Home />} />
-          <Route path="users" element={<User />} />
+          <Route path="users" element={<ListQuiz />} />
         </Route>
 
         <Route path="/admin" element={<Admin />} >
