@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import { useDispatch } from 'react-redux';
 import { doLogin } from '../../redux/action/userAction';
+import { ImSpinner9 } from "react-icons/im";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateEmail = (email) => {
     return String(email)
@@ -34,16 +36,18 @@ const Login = () => {
       toast.error('invalid password')
       return;
     }
-
+    setIsLoading(true)
     // submit apis
     const data = await postLogin(email, password);
     if (data && data.EC === 0) {
       dispatch(doLogin(data))
       toast.success(data.EM)
+      setIsLoading(false)
       navigate('/')
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM)
+      setIsLoading(false)
     }
   }
 
@@ -92,7 +96,14 @@ const Login = () => {
         </div>
         <span className='forgot-password'>Forgot password?</span>
         <div>
-          <button className='btn-login' onClick={() => handleLogin()}>Login</button>
+          <button
+            className='btn-login'
+            onClick={() => handleLogin()}
+            disabled={isLoading}
+          >
+            {isLoading && <ImSpinner9 className="loaderIcon" />}
+            <span>Login</span>
+          </button>
         </div>
         <div className='text-center'>
           <span className='back' onClick={() => navigate('/')}>
