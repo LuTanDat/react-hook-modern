@@ -4,9 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { postLogin } from '../../services/apiServices';
 import { toast } from 'react-toastify';
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import { useDispatch } from 'react-redux';
+import { doLogin } from '../../redux/action/userAction';
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,6 +38,7 @@ const Login = () => {
     // submit apis
     const data = await postLogin(email, password);
     if (data && data.EC === 0) {
+      dispatch(doLogin(data))
       toast.success(data.EM)
       navigate('/')
     }
