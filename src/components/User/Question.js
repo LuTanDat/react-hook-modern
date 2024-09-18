@@ -1,10 +1,7 @@
 import _ from 'lodash'
 
 const Question = (props) => {
-  const { data } = props;
-
-  console.log('data detailQuiz: ', data);
-
+  const { data } = props; // console.log('data detailQuiz: ', data);
 
   const handleHandCheckbox = (e, aId, qId) => {
     // console.log(e.target.checked, id)

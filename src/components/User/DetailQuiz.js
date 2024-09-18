@@ -59,7 +59,6 @@ const DetailQuiz = () => {
 
   // khi quan ly state trong React, nen tao ra ban sao r gán lại de tranh bugs
   const handleCheckbox = (answerId, questionId) => {
-    console.log('aId, qId:', answerId, questionId);
 
     let dataQuizClone = _.cloneDeep(dataQuiz); // clone the dataQuiz
 
@@ -80,11 +79,44 @@ const DetailQuiz = () => {
     if (index > -1) {
       dataQuizClone[index] = question;
       setDataQuiz(dataQuizClone);
-      // console.log('question after change: ', question);
-      console.log('>>> check dataQuizClone: ', dataQuizClone);
     }
   }
-  console.log('>>> check dataQuiz: ', dataQuiz);
+
+  const handleFinishQuiz = () => {
+    console.log('>>> data before build: ', dataQuiz);
+
+    if (!dataQuiz || dataQuiz.length === 0) return; // can nhac thoat som tranh loi tiem an
+
+    const payload = {
+      quizId: +quizId,
+      answers: []
+    };
+
+    // cach 1: 
+    dataQuiz.forEach(question => {
+      let userAnswerId = [];
+      question.answers.forEach(answer => {
+        if (answer.isSelected === true) {
+          userAnswerId.push(+answer.id);
+        }
+      })
+      payload.answers.push({
+        questionId: +question.questionId,
+        userAnswerId: userAnswerId,
+      });
+    });
+
+    // cach 2:
+    // dataQuiz.forEach(question => {
+    //   payload.answers.push({
+    //     questionId: +question.questionId,
+    //     userAnswerId: question.answers.filter(answer => answer.isSelected)
+    //       .map(answer => +answer.id)
+    //   });
+    // });
+
+    console.log('>>> data after build: ', payload);
+  };
 
   return (
     <div className="detail-quiz-container">
@@ -114,7 +146,7 @@ const DetailQuiz = () => {
             Next
           </button>
           <button className='btn btn-warning'
-            onClick={() => handleNext()}
+            onClick={() => handleFinishQuiz()}
           >
             Finish
           </button>
