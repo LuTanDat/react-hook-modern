@@ -3,7 +3,13 @@ import _ from 'lodash'
 const Question = (props) => {
   const { data } = props;
 
-  console.log(data);
+  console.log('data detailQuiz: ', data);
+
+
+  const handleHandCheckbox = (e, aId, qId) => {
+    // console.log(e.target.checked, id)
+    props.handleCheckbox(aId, qId)
+  }
 
 
   if (_.isEmpty(data)) {
@@ -16,7 +22,6 @@ const Question = (props) => {
           <img src={`data:image/jpeg;base64, ${data.image}`} alt='' />
         </div> :
         <div className='q-image'>
-
         </div>
       }
       <div className='question'>Question {data?.questionId}: {data?.questionDescription} ?</div>
@@ -25,8 +30,14 @@ const Question = (props) => {
           return (
             <div key={`answers ${index}`} className='a-child'>
               <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label className="form-check-label" htmlFor="flexCheckDefault">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={`flexCheckDefault ${index}`}
+                  onClick={(e) => handleHandCheckbox(e, a.id, data.questionId)}
+                  checked={a.isSelected}
+                />
+                <label className="form-check-label" htmlFor={`flexCheckDefault ${index}`}>
                   {a.description}
                 </label>
               </div>
