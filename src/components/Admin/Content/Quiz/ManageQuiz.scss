@@ -1,9 +1,8 @@
 .quiz-container {
-  padding: 10px;
 
   .title {
     font-weight: 600;
-    font-size  : 25px;
+    font-size  : 23px;
   }
 
   .add-new {
@@ -42,6 +41,15 @@
         max-width : 100%;
         max-height: 100%;
       }
+    }
+  }
+
+  .list-detail {
+    padding: 10px;
+
+    .title-table-list-quiz {
+      font-weight: 500;
+      font-size  : 20px;
     }
   }
 
