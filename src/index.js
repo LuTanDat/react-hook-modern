@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'nprogress/nprogress.css';
 import { PersistGate } from 'redux-persist/integration/react'; // dam bao load xong data tu localstorage len roi moi chay react
 import { BrowserRouter } from "react-router-dom";
 import Layout from './Layout';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'nprogress/nprogress.css'; // hien thi thanh tien trinh khi load api
+import 'react-perfect-scrollbar/dist/css/styles.css'; // tao scroll bar
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
