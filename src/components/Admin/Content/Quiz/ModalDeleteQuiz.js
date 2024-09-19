@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import { deleteQuizForAdmin } from '../../../../services/apiServices';
 
 const ModalDeleteQuiz = (props) => {
-  const { show, setShow, dataDelete, fetchListQuiz } = props;
+  const { show, setShow, dataDelete, fetchQuiz } = props;
 
   const handleClose = () => setShow(false);
 
@@ -14,7 +14,7 @@ const ModalDeleteQuiz = (props) => {
     if (data && data.EC === 0) {
       toast.success(data.EM)
       handleClose()
-      fetchListQuiz()
+      fetchQuiz()
       // // await fetchListUsers()
       // props.setCurrentPage(1);
       // await props.fetchListUsersWithPaginate(1);
