@@ -1,15 +1,18 @@
 import './DetailQuiz.scss'
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { getDataQuiz } from "../../services/apiServices";
+import { getDataQuiz, postSubmitQuiz } from "../../services/apiServices";
 import _ from 'lodash';
 import Question from './Question';
+import ModalResult from './ModalResult';
 
 const DetailQuiz = () => {
   const location = useLocation();
   const params = useParams();
   const [dataQuiz, setDataQuiz] = useState([]);
   const [index, setIndex] = useState(0); //currentQuestion
+  const [showModalResult, setShowModalResult] = useState(false);
+  const [dataModalResult, setDataModalResult] = useState({});
 
   const quizId = params.id;
 
@@ -17,7 +20,7 @@ const DetailQuiz = () => {
     fetchDataQuiz();
   }, [quizId])
 
-  const fetchDataQuiz = async () => {
+  const fetchDataQuiz = async () => { // che bien du lieu
     let res = await getDataQuiz(quizId);// console.log('data backend: ', res);
 
     if (res && res.EC === 0) {
@@ -82,11 +85,9 @@ const DetailQuiz = () => {
     }
   }
 
-  const handleFinishQuiz = () => {
+  const handleFinishQuiz = async () => { // che bien du lieu truoc khi submit
     console.log('>>> data before build: ', dataQuiz);
-
     if (!dataQuiz || dataQuiz.length === 0) return; // can nhac thoat som tranh loi tiem an
-
     const payload = {
       quizId: +quizId,
       answers: []
@@ -116,46 +117,63 @@ const DetailQuiz = () => {
     // });
 
     console.log('>>> data after build: ', payload);
+
+    // submit apis
+    let res = await postSubmitQuiz(payload);
+    console.log('>>> res submitted: ', res);
+    if (res && res.EC === 0) {
+      setDataModalResult(res.DT); // throw data result to modal
+      setShowModalResult(true);
+    } else {
+      alert('somethings wrong....')
+    }
   };
 
   return (
-    <div className="detail-quiz-container">
-      <div className="left-content">
-        <div className="title">
-          Quiz {quizId}: {location?.state?.quizTitle}
+    <>
+      <div className="detail-quiz-container">
+        <div className="left-content">
+          <div className="title">
+            Quiz {quizId}: {location?.state?.quizTitle}
+          </div>
+          <hr />
+          <div className="q-body">
+            <img />
+          </div>
+          <div className="q-content">
+            <Question
+              handleCheckbox={handleCheckbox}
+              data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
+            />
+          </div>
+          <div className='footer'>
+            <button className='btn btn-secondary'
+              onClick={() => handlePrev()}
+            >
+              Prev
+            </button>
+            <button className='btn btn-primary'
+              onClick={() => handleNext()}
+            >
+              Next
+            </button>
+            <button className='btn btn-warning'
+              onClick={() => handleFinishQuiz()}
+            >
+              Finish
+            </button>
+          </div>
         </div>
-        <hr />
-        <div className="q-body">
-          <img />
-        </div>
-        <div className="q-content">
-          <Question
-            handleCheckbox={handleCheckbox}
-            data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
-          />
-        </div>
-        <div className='footer'>
-          <button className='btn btn-secondary'
-            onClick={() => handlePrev()}
-          >
-            Prev
-          </button>
-          <button className='btn btn-primary'
-            onClick={() => handleNext()}
-          >
-            Next
-          </button>
-          <button className='btn btn-warning'
-            onClick={() => handleFinishQuiz()}
-          >
-            Finish
-          </button>
+        <div className="right-content">
+          count down
         </div>
       </div>
-      <div className="right-content">
-        count down
-      </div>
-    </div>
+      <ModalResult
+        show={showModalResult}
+        setShow={setShowModalResult}
+        dataModalResult={dataModalResult}
+      />
+    </>
   )
 }
 
