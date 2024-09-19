@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { getAllQuizForAdmin } from "../../../../services/apiServices";
+import ModalDeleteQuiz from "./ModalDeleteQuiz";
+// import ModalUpdateQuiz from "./ModalUpdateQuiz";
 
 
 const TableQuiz = () => {
-
   const [listQuiz, setListQuiz] = useState();
+
+  // const [showModel, setShowModel] = useState(false);
+  // const [dataUpdate, setDataUpdate] = useState({})
+
+  const [showModelDelete, setShowModelDelete] = useState(false);
+  const [dataDelete, setDataDelete] = useState({})
 
   useEffect(() => {
     fetchListQuiz();
@@ -18,10 +25,24 @@ const TableQuiz = () => {
     }
   }
 
+  // const handleClickBtnUpdate = (quiz) => {
+  //   setShowModel(true);
+  //   setDataUpdate(quiz)
+  // }
+
+  // const resetUpdateData = () => {
+  //   setDataUpdate({})
+  // }
+
+  const handleClickBtnDelete = (quiz) => {
+    setShowModelDelete(true);
+    setDataDelete(quiz);
+  }
+
   return (
     <>
       <div className="title-table-list-quiz">List Quizzes: </div>
-      <table class="table table-hover table-bordered mt-2">
+      <table className="table table-hover table-bordered mt-2">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -54,7 +75,7 @@ const TableQuiz = () => {
                   </button>
                   <button
                     className="btn btn-danger"
-                  // onClick={() => handleClickBtnDelete(item)}
+                    onClick={() => handleClickBtnDelete(item)}
                   >
                     Delete
                   </button>
@@ -64,6 +85,22 @@ const TableQuiz = () => {
           })}
         </tbody>
       </table>
+
+
+      {/* <ModalUpdateQuiz
+        show={showModel}
+        setShow={setShowModel}
+        dataUpdate={dataUpdate}
+        resetUpdateData={resetUpdateData} // dong modal tu reset lai data update
+        fetchListQuiz={fetchListQuiz}
+      /> */}
+
+      <ModalDeleteQuiz
+        show={showModelDelete}
+        setShow={setShowModelDelete}
+        dataDelete={dataDelete}
+        fetchListQuiz={fetchListQuiz}
+      />
     </>
   )
 }
