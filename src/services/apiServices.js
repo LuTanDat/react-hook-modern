@@ -71,7 +71,7 @@ const getAllQuizForAdmin = () => {
   return axios.get(`api/v1/quiz/all`)
 }
 
-const putUpdateQuizForAdmin = (id, description, name, difficulty, image) => {
+const putUpdateQuizForAdmin = (id, name, description, difficulty, image) => {
   const data = new FormData(); // dung cho du lieu lon nhu file, video
   data.append('id', id)
   data.append('description', description);

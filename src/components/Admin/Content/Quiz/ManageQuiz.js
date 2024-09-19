@@ -16,11 +16,11 @@ const options = [
 const ManageQuiz = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [type, setType] = useState('EASY');
+  const [type, setType] = useState('');
   const [image, setImage] = useState(null);
   const [previewImg, setPreviewImg] = useState('');
 
-  const handleChangeImage = (e) => {
+  const handleChangeFile = (e) => {
     if (e.target && e.target.files && e.target.files[0]) { // co chon file de upload
       setPreviewImg(URL.createObjectURL(e.target.files[0]))
       setImage(e.target.files[0])
@@ -40,7 +40,6 @@ const ManageQuiz = () => {
       toast.success(res.EM)
       setName('')
       setDescription('')
-      // setType('EASY')
       setImage(null)
       setPreviewImg('')
     } else {
@@ -96,7 +95,7 @@ const ManageQuiz = () => {
                   </label>
                   <input
                     id='labelUpload' type='file' className='form-control' hidden
-                    onChange={(e) => handleChangeImage(e)}
+                    onChange={(e) => handleChangeFile(e)}
                   />
                 </div>
                 <div className='img-preview'>
