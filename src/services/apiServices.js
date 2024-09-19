@@ -57,8 +57,18 @@ const postSubmitQuiz = (data) => {
   return axios.post(`/api/v1/quiz-submit`, { ...data })
 }
 
+const postCreateNewQuiz = (description, name, difficulty, image) => {
+  const data = new FormData(); // dung cho du lieu lon nhu file, video
+  data.append('description', description);
+  data.append('name', name);
+  data.append('difficulty', difficulty);
+  data.append('quizImage', image);
+
+  return axios.post('api/v1/quiz', data)
+}
+
 export {
   postAddNewUsers, getAllUsers, putUpdateUser, deleteUsers, getUsersWithPaginate,
   postLogin, postRegister,
-  getQuizByUser, getDataQuiz, postSubmitQuiz,
+  getQuizByUser, getDataQuiz, postSubmitQuiz, postCreateNewQuiz
 }
