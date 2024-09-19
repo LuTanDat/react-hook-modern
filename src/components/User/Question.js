@@ -28,11 +28,11 @@ const Question = (props) => {
             <div key={`answers ${index}`} className='a-child'>
               <div className="form-check">
                 <input
+                  id={`flexCheckDefault ${index}`}
                   className="form-check-input"
                   type="checkbox"
-                  id={`flexCheckDefault ${index}`}
-                  onClick={(e) => handleHandCheckbox(e, a.id, data.questionId)}
                   checked={a.isSelected}
+                  onChange={(e) => handleHandCheckbox(e, a.id, data.questionId)}
                 />
                 <label className="form-check-label" htmlFor={`flexCheckDefault ${index}`}>
                   {a.description}
