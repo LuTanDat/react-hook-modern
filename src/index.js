@@ -9,6 +9,7 @@ import Layout from './Layout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'nprogress/nprogress.css'; // hien thi thanh tien trinh khi load api
 import 'react-perfect-scrollbar/dist/css/styles.css'; // tao scroll bar
+import "react-awesome-lightbox/build/style.css"; // review image
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

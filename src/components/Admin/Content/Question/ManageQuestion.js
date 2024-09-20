@@ -6,6 +6,7 @@ import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 import { RiImageAddFill } from "react-icons/ri";
 import { v4 as uuidv4 } from 'uuid'; // generate unique id
 import _ from 'lodash';
+import Lightbox from "react-awesome-lightbox";
 
 const ManageQuestion = (props) => {
   const options = [
@@ -14,6 +15,7 @@ const ManageQuestion = (props) => {
     { value: 'vanilla', label: 'Vanilla' },
   ];
   const [selectedQuiz, setSelectedQuiz] = useState({})
+
   const [questions, setQuestions] = useState(
     [
       {
@@ -26,6 +28,12 @@ const ManageQuestion = (props) => {
         ]
       }
     ])
+
+  const [isPreviewImage, setIsPreviewImage] = useState(false);
+  const [dataImagePreview, setDataImagePreview] = useState({
+    title: '',
+    url: ''
+  })
 
   const handleAddRemoveQuestion = (type, id) => {
     if (type === 'ADD') {
@@ -118,6 +126,14 @@ const ManageQuestion = (props) => {
     console.log('>>> Questions: ', questions);
   }
 
+  const handlePreviewImage = (question) => {
+    setIsPreviewImage(true);
+    setDataImagePreview({
+      title: question.imageName,
+      url: URL.createObjectURL(question.imageFile)
+    })
+  }
+
   return (
     <div className="question-container">
       <div className="title">
@@ -139,6 +155,7 @@ const ManageQuestion = (props) => {
         {questions && questions.length > 0 && questions.map((question, index) => {
           return (
             <div key={question.id} className='q-main mb-4'>
+
               <div className='question-content'>
                 <div className="form-floating description">
                   <input type="text" className="form-control"
@@ -155,7 +172,15 @@ const ManageQuestion = (props) => {
                   <input id={`${question.id}`} type='file' hidden
                     onChange={(e) => handleOnChangeFileQuestion(question.id, e)}
                   />
-                  <span>{question.imageName ? question.imageName : '0 file is selected'}</span>
+                  <span>
+                    {question.imageName ?
+                      <span
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handlePreviewImage(question)}>
+                        {question.imageName}
+                      </span> :
+                      '0 file is selected'}
+                  </span>
                 </div>
                 <div className='btn-add'>
                   <span onClick={() => handleAddRemoveQuestion('ADD', '')}>
@@ -169,7 +194,6 @@ const ManageQuestion = (props) => {
                   }
                 </div>
               </div>
-
 
               {question.answers && question.answers.length > 0 && question.answers.map((answer, index) => {
                 return (
@@ -202,7 +226,6 @@ const ManageQuestion = (props) => {
                   </div>
                 )
               })}
-
             </div>
           )
         })}
@@ -213,6 +236,15 @@ const ManageQuestion = (props) => {
               className='btn btn-warning'
             >Save Questions</button>
           </div>
+        }
+
+        {isPreviewImage === true &&
+          <Lightbox
+            image={dataImagePreview.url}
+            title={dataImagePreview.title}
+            onClose={() => setIsPreviewImage(false)}
+          >
+          </Lightbox>
         }
 
       </div>
