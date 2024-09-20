@@ -20,6 +20,8 @@ const ManageQuiz = () => {
   const [image, setImage] = useState(null);
   const [previewImg, setPreviewImg] = useState('');
 
+  const [isCreatedNewQuiz, setIsCreatedNewQuiz] = useState(false);
+
   const handleChangeFile = (e) => {
     if (e.target && e.target.files && e.target.files[0]) { // co chon file de upload
       setPreviewImg(URL.createObjectURL(e.target.files[0]))
@@ -42,6 +44,7 @@ const ManageQuiz = () => {
       setDescription('')
       setImage(null)
       setPreviewImg('')
+      setIsCreatedNewQuiz(true);
     } else {
       toast.error(res.EM)
     }
@@ -117,7 +120,10 @@ const ManageQuiz = () => {
       </Accordion>
       <hr />
       <div className="list-detail mt-2">
-        <TableQuiz />
+        <TableQuiz
+          isCreatedNewQuiz={isCreatedNewQuiz}
+          setIsCreatedNewQuiz={setIsCreatedNewQuiz}
+        />
       </div>
     </div>
   )

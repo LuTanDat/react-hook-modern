@@ -4,7 +4,7 @@ import ModalDeleteQuiz from "./ModalDeleteQuiz";
 import ModalUpdateQuiz from "./ModalUpdateQuiz";
 
 
-const TableQuiz = () => {
+const TableQuiz = (props) => {
   const [listQuiz, setListQuiz] = useState();
 
   const [showModel, setShowModel] = useState(false);
@@ -15,7 +15,9 @@ const TableQuiz = () => {
 
   useEffect(() => {
     fetchListQuiz();
-  }, [])
+
+    props.setIsCreatedNewQuiz(false);
+  }, [props.isCreatedNewQuiz === true])
 
   const fetchListQuiz = async () => {
     setDataUpdate({});
