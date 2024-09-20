@@ -18,11 +18,11 @@ const ManageQuestion = (props) => {
     [
       {
         id: uuidv4(),
-        description: 'Question 1',
+        description: '',
         imageFile: '',
         imageName: '',
         answers: [
-          { id: uuidv4(), description: 'Answer 1', isCorrect: false },
+          { id: uuidv4(), description: '', isCorrect: false },
         ]
       }
     ])
@@ -75,7 +75,48 @@ const ManageQuestion = (props) => {
     }
   }
 
-  console.log('>>> Questions: ', questions);
+  const handleOnChange = (type, questionId, value) => {
+    if (type === 'QUESTION') {
+      let questionClone = _.cloneDeep(questions);
+      let index = questionClone.findIndex(item => item.id === questionId);
+      if (index > -1) {
+        questionClone[index].description = value;
+        setQuestions(questionClone);
+      }
+    }
+  }
+
+  const handleOnChangeFileQuestion = (questionId, e) => {
+    let questionClone = _.cloneDeep(questions);
+    let index = questionClone.findIndex(item => item.id === questionId);
+    if (index > -1 && e.target && e.target.files && e.target.files[0]) {
+      questionClone[index].imageFile = e.target.files[0];
+      questionClone[index].imageName = e.target.files[0].name;
+
+      setQuestions(questionClone);
+    }
+  }
+
+  const handleAnswerQuestion = (type, answerId, questionId, value) => {
+    let questionClone = _.cloneDeep(questions);
+    let index = questionClone.findIndex(item => item.id === questionId);
+    if (index > -1) {
+      questionClone[index].answers = questionClone[index].answers.map(answer => {
+        if (answer.id === answerId) {
+          if (type === 'CHECKBOX')
+            answer.isCorrect = value;
+          if (type === 'INPUT')
+            answer.description = value;
+        }
+        return answer;
+      })
+      setQuestions(questionClone);
+    }
+  }
+
+  const handleSubmitQuestionForQuiz = () => {
+    console.log('>>> Questions: ', questions);
+  }
 
   return (
     <div className="question-container">
@@ -100,17 +141,21 @@ const ManageQuestion = (props) => {
             <div key={question.id} className='q-main mb-4'>
               <div className='question-content'>
                 <div className="form-floating description">
-                  <input type="text" className="form-control" placeholder="Question's Description"
+                  <input type="text" className="form-control"
+                    placeholder="Question's Description"
                     value={question.description}
+                    onChange={(e) => handleOnChange('QUESTION', question.id, e.target.value)}
                   />
                   <label>Question {index + 1}'s Description</label>
                 </div>
                 <div className='group-upload'>
-                  <label>
+                  <label htmlFor={`${question.id}`}>
                     <RiImageAddFill className='label-up' />
                   </label>
-                  <input type='file' hidden />
-                  <span>0 file is selected</span>
+                  <input id={`${question.id}`} type='file' hidden
+                    onChange={(e) => handleOnChangeFileQuestion(question.id, e)}
+                  />
+                  <span>{question.imageName ? question.imageName : '0 file is selected'}</span>
                 </div>
                 <div className='btn-add'>
                   <span onClick={() => handleAddRemoveQuestion('ADD', '')}>
@@ -133,12 +178,13 @@ const ManageQuestion = (props) => {
                       // id={`flexCheckDefault ${index}`}
                       className="form-check-input isCorrect"
                       type="checkbox"
-                    // checked={a.isSelected}
-                    // onChange={(e) => handleHandCheckbox(e, a.id, data.questionId)}
+                      checked={answer.isCorrect}
+                      onChange={(e) => handleAnswerQuestion('CHECKBOX', answer.id, question.id, e.target.checked)}
                     />
                     <div className="form-floating answer-name">
                       <input type="text" className="form-control" placeholder="Answer 1"
                         value={answer.description}
+                        onChange={(e) => handleAnswerQuestion('INPUT', answer.id, question.id, e.target.value)}
                       />
                       <label>Answer {index + 1}</label>
                     </div>
@@ -160,8 +206,17 @@ const ManageQuestion = (props) => {
             </div>
           )
         })}
+        {questions && questions.length > 0 &&
+          <div>
+            <button
+              onClick={() => handleSubmitQuestionForQuiz()}
+              className='btn btn-warning'
+            >Save Questions</button>
+          </div>
+        }
 
       </div>
+      <hr />
       <div className='list-question'>
         list question
       </div>
