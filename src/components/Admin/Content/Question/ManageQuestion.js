@@ -18,8 +18,9 @@ const ManageQuestion = (props) => {
       description: '',
       imageFile: '',
       imageName: '',
+      isValidQuestion: false,
       answers: [
-        { id: uuidv4(), description: '', isCorrect: false },
+        { id: uuidv4(), description: '', isCorrect: false, isValidAnswer: false },
       ]
     }
   ]
@@ -105,6 +106,7 @@ const ManageQuestion = (props) => {
       let index = questionClone.findIndex(item => item.id === questionId);
       if (index > -1) {
         questionClone[index].description = value;
+        questionClone[index].isValidQuestion = false;
         setQuestions(questionClone);
       }
     }
@@ -129,8 +131,10 @@ const ManageQuestion = (props) => {
         if (answer.id === answerId) {
           if (type === 'CHECKBOX')
             answer.isCorrect = value;
-          if (type === 'INPUT')
+          if (type === 'INPUT') {
             answer.description = value;
+            answer.isValidAnswer = false;
+          }
         }
         return answer;
       })
@@ -160,12 +164,22 @@ const ManageQuestion = (props) => {
       if (!questions[i].description) {
         toast.error(`Question ${i + 1} is not empty.`);
         isValidQuestion = true;
+
+        let questionClone = _.cloneDeep(questions);
+        questionClone[i].isValidQuestion = isValidQuestion;
+        setQuestions(questionClone);
+
         return;
       }
       for (let j = 0; j < questions[i].answers.length; j++) {
         if (!questions[i].answers[j].description) {
           toast.error(`Question ${i + 1} - Answer ${j + 1} is not empty.`);
           isValidAnswer = true;
+
+          let questionClone = _.cloneDeep(questions);
+          questionClone[i].answers[j].isValidAnswer = isValidAnswer;
+          setQuestions(questionClone);
+
           break;
         }
       }
@@ -202,6 +216,8 @@ const ManageQuestion = (props) => {
     })
   }
 
+  // console.log('>>> questions: ', questions);
+
   return (
     <div className="question-container">
       <div className="title">
@@ -226,7 +242,8 @@ const ManageQuestion = (props) => {
 
               <div className='question-content'>
                 <div className="form-floating description">
-                  <input type="text" className="form-control"
+                  <input type="text"
+                    className={`form-control ${question.isValidQuestion ? 'is-invalid' : ''}`}
                     placeholder="Question's Description"
                     value={question.description}
                     onChange={(e) => handleOnChange('QUESTION', question.id, e.target.value)}
@@ -274,7 +291,9 @@ const ManageQuestion = (props) => {
                       onChange={(e) => handleAnswerQuestion('CHECKBOX', answer.id, question.id, e.target.checked)}
                     />
                     <div className="form-floating answer-name">
-                      <input type="text" className="form-control" placeholder="Answer 1"
+                      <input type="text"
+                        className={`form-control ${answer.isValidAnswer ? 'is-invalid' : ''}`}
+                        placeholder="Answer 1"
                         value={answer.description}
                         onChange={(e) => handleAnswerQuestion('INPUT', answer.id, question.id, e.target.value)}
                       />
