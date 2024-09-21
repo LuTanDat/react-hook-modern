@@ -1,12 +1,13 @@
+import './ManageQuestion.scss'
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
-import './ManageQuestion.scss'
 import { AiFillPlusSquare, AiFillMinusSquare } from "react-icons/ai";
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 import { RiImageAddFill } from "react-icons/ri";
 import { v4 as uuidv4 } from 'uuid'; // generate unique id
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
+import { toast } from 'react-toastify';
 import { getAllQuizForAdmin, postCreateNewQuestionForAdmin, postCreateNewAnswerForAdmin } from '../../../../services/apiServices';
 
 const ManageQuestion = (props) => {
@@ -142,9 +143,9 @@ const ManageQuestion = (props) => {
     // validate
 
 
-    // submit questions
-    // trong map ko chờ, nên phải thêm Promise.all để nó chờ
+
     /**
+     * trong map ko chờ, nên phải thêm Promise.all để nó chờ
      * Promise.all: 
      *  - đảm bảo all request api đều đc chạy,
      *  - ko chạy theo trình tự mà chạy song song => đảm bảo tốc độ nhanh
