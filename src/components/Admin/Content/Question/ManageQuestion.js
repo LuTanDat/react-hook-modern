@@ -12,18 +12,18 @@ import { getAllQuizForAdmin, postCreateNewQuestionForAdmin, postCreateNewAnswerF
 
 const ManageQuestion = (props) => {
 
-  const [questions, setQuestions] = useState(
-    [
-      {
-        id: uuidv4(),
-        description: '',
-        imageFile: '',
-        imageName: '',
-        answers: [
-          { id: uuidv4(), description: '', isCorrect: false },
-        ]
-      }
-    ])
+  const initQuestion = [
+    {
+      id: uuidv4(),
+      description: '',
+      imageFile: '',
+      imageName: '',
+      answers: [
+        { id: uuidv4(), description: '', isCorrect: false },
+      ]
+    }
+  ]
+  const [questions, setQuestions] = useState(initQuestion);
 
   const [isPreviewImage, setIsPreviewImage] = useState(false);
   const [dataImagePreview, setDataImagePreview] = useState({
@@ -140,28 +140,58 @@ const ManageQuestion = (props) => {
 
   const handleSubmitQuestionForQuiz = async () => {
     console.log('>>> data after process: ', questions, selectedQuiz);
-    // validate
-
-
-
     /**
-     * trong map ko chờ, nên phải thêm Promise.all để nó chờ
-     * Promise.all: 
-     *  - đảm bảo all request api đều đc chạy,
-     *  - ko chạy theo trình tự mà chạy song song => đảm bảo tốc độ nhanh
-     *  -> dẫn đến thứ tự chạy lộn xộn
-     * */
-    await Promise.all(questions.map(async (question) => {
-      let q = await postCreateNewQuestionForAdmin(
+ * trong map ko chờ, nên phải thêm Promise.all để nó chờ
+ * Promise.all: 
+ *  - đảm bảo all request api đều đc chạy,
+ *  - ko chạy theo trình tự mà chạy song song => đảm bảo tốc độ nhanh
+ *  -> dẫn đến thứ tự chạy lộn xộn
+ * */
+
+    // validate
+    if (_.isEmpty(selectedQuiz)) {
+      toast.error('Please choose a Quiz!');
+      return;
+    }
+
+    let isValidAnswer = false;
+    let isValidQuestion = false;
+    for (let i = 0; i < questions.length; i++) {
+      if (!questions[i].description) {
+        toast.error(`Question ${i + 1} is not empty.`);
+        isValidQuestion = true;
+        return;
+      }
+      for (let j = 0; j < questions[i].answers.length; j++) {
+        if (!questions[i].answers[j].description) {
+          toast.error(`Question ${i + 1} - Answer ${j + 1} is not empty.`);
+          isValidAnswer = true;
+          break;
+        }
+      }
+      if (isValidAnswer === true) return;
+    }
+
+
+    // submit questions
+    let q, a = {};
+    for (const question of questions) {
+      q = await postCreateNewQuestionForAdmin(
         +selectedQuiz.value, question.description, question.imageFile)
-      console.log('>>> check q: ', q);
+      // console.log('>>> check q: ', q);
 
       // submit answers
-      await Promise.all(question.answers.map(async (answer) => {
-        await postCreateNewAnswerForAdmin(
+      for (const answer of question.answers) {
+        a = await postCreateNewAnswerForAdmin(
           answer.description, answer.isCorrect, q.DT.id)
-      }))
-    }))
+        // console.log('>>> check a: ', a);
+      }
+    }
+
+    if (q.EC === 0 && a.EC === 0) {
+      toast.success('Create question and answer successfully.')
+      setQuestions(initQuestion);
+    }
   }
 
   const handlePreviewImage = (question) => {
