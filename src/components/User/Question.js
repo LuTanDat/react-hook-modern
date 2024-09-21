@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 const Question = (props) => {
-  const { data } = props; // console.log('data detailQuiz: ', data);
+  const { data } = props;// console.log('data detailQuiz: ', data);
 
   const handleHandCheckbox = (e, aId, qId) => {
     // console.log(e.target.checked, id)
@@ -21,7 +21,7 @@ const Question = (props) => {
         <div className='q-image'>
         </div>
       }
-      <div className='question'>Question {data?.questionId}: {data?.questionDescription} ?</div>
+      <div className='question'>Question {props.currentQuestionIndex}: {data?.questionDescription} ?</div>
       <div className='answers'>
         {data.answers && data.answers.length > 0 && data.answers.map((a, index) => {
           return (

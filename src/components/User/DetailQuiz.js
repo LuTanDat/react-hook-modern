@@ -9,7 +9,7 @@ import ModalResult from './ModalResult';
 const DetailQuiz = () => {
   const location = useLocation();
   const params = useParams();
-  const [dataQuiz, setDataQuiz] = useState([]);
+  const [dataQuiz, setDataQuiz] = useState([]); // data of 1 quiz
   const [index, setIndex] = useState(0); //currentQuestion
   const [showModalResult, setShowModalResult] = useState(false);
   const [dataModalResult, setDataModalResult] = useState({});
@@ -137,12 +137,13 @@ const DetailQuiz = () => {
             Quiz {quizId}: {location?.state?.quizTitle}
           </div>
           <hr />
-          <div className="q-body">
+          {/* <div className="q-body">
             <img />
-          </div>
+          </div> */}
           <div className="q-content">
             <Question
               handleCheckbox={handleCheckbox}
+              currentQuestionIndex={index + 1}
               data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
             />
           </div>
