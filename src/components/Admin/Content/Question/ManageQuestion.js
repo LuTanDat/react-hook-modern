@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import './ManageQuestion.scss'
 import { AiFillPlusSquare, AiFillMinusSquare } from "react-icons/ai";
@@ -7,14 +7,9 @@ import { RiImageAddFill } from "react-icons/ri";
 import { v4 as uuidv4 } from 'uuid'; // generate unique id
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
+import { getAllQuizForAdmin, postCreateNewQuestionForAdmin, postCreateNewAnswerForAdmin } from '../../../../services/apiServices';
 
 const ManageQuestion = (props) => {
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-  ];
-  const [selectedQuiz, setSelectedQuiz] = useState({})
 
   const [questions, setQuestions] = useState(
     [
@@ -34,6 +29,26 @@ const ManageQuestion = (props) => {
     title: '',
     url: ''
   })
+
+  const [listQuiz, setListQuiz] = useState(); // danh sach quiz
+  const [selectedQuiz, setSelectedQuiz] = useState({})
+
+  useEffect(() => {
+    fetchListQuiz();
+  }, [])
+
+  const fetchListQuiz = async () => {
+    let res = await getAllQuizForAdmin();
+    if (res && res.EC === 0) {
+      let newQuiz = res.DT.map(item => {
+        return {
+          value: item.id,
+          label: `${item.id} - ${item.description}`
+        }
+      })
+      setListQuiz(newQuiz)
+    }
+  }
 
   const handleAddRemoveQuestion = (type, id) => {
     if (type === 'ADD') {
@@ -122,8 +137,24 @@ const ManageQuestion = (props) => {
     }
   }
 
-  const handleSubmitQuestionForQuiz = () => {
-    console.log('>>> Questions: ', questions);
+  const handleSubmitQuestionForQuiz = async () => {
+    console.log('>>> data after process: ', questions, selectedQuiz);
+    // validate
+
+
+    // submit questions
+    // trong map ko chờ, nên phải thêm Promise.all để nó chờ
+    await Promise.all(questions.map(async (question) => {
+      let q = await postCreateNewQuestionForAdmin(
+        +selectedQuiz.value, question.description, question.imageFile)
+      console.log('>>> check q: ', q);
+
+      // submit answers
+      await Promise.all(question.answers.map(async (answer) => {
+        await postCreateNewAnswerForAdmin(
+          answer.description, answer.isCorrect, q.DT.id)
+      }))
+    }))
   }
 
   const handlePreviewImage = (question) => {
@@ -146,7 +177,7 @@ const ManageQuestion = (props) => {
           <Select
             defaultValue={selectedQuiz}
             onChange={setSelectedQuiz}
-            options={options}
+            options={listQuiz}
           />
         </div>
 
