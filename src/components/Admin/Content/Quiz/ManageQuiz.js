@@ -6,6 +6,8 @@ import { postCreateNewQuiz } from '../../../../services/apiServices';
 import { toast } from 'react-toastify';
 import TableQuiz from './TableQuiz';
 import Accordion from 'react-bootstrap/Accordion';
+import QuizQA from './QuizQA';
+import AssignQuiz from './AssignQuiz';
 
 const options = [
   { value: 'EASY', label: 'EASY' },
@@ -115,16 +117,36 @@ const ManageQuiz = () => {
                 </div>
               </fieldset>
             </div>
+            <hr />
+            <div className="list-detail mt-2">
+              <TableQuiz
+                isCreatedNewQuiz={isCreatedNewQuiz}
+                setIsCreatedNewQuiz={setIsCreatedNewQuiz}
+              />
+            </div>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>
+            <div className="title">
+              Update Q/A Quizzes
+            </div>
+          </Accordion.Header>
+          <Accordion.Body>
+            <QuizQA />
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>
+            <div className="title">
+              Assign Quiz for User
+            </div>
+          </Accordion.Header>
+          <Accordion.Body>
+            <AssignQuiz />
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
-      <hr />
-      <div className="list-detail mt-2">
-        <TableQuiz
-          isCreatedNewQuiz={isCreatedNewQuiz}
-          setIsCreatedNewQuiz={setIsCreatedNewQuiz}
-        />
-      </div>
     </div>
   )
 }
