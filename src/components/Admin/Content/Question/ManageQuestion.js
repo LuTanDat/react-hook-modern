@@ -144,6 +144,12 @@ const ManageQuestion = (props) => {
 
     // submit questions
     // trong map ko chờ, nên phải thêm Promise.all để nó chờ
+    /**
+     * Promise.all: 
+     *  - đảm bảo all request api đều đc chạy,
+     *  - ko chạy theo trình tự mà chạy song song => đảm bảo tốc độ nhanh
+     *  -> dẫn đến thứ tự chạy lộn xộn
+     * */
     await Promise.all(questions.map(async (question) => {
       let q = await postCreateNewQuestionForAdmin(
         +selectedQuiz.value, question.description, question.imageFile)
