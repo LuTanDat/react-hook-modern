@@ -13,6 +13,7 @@ import {
   postCreateNewQuestionForAdmin,
   postCreateNewAnswerForAdmin,
   getQuizWithQA,
+  postUpsertQA,
 } from '../../../../services/apiServices';
 
 const QuizQA = (props) => {
@@ -71,7 +72,7 @@ const QuizQA = (props) => {
   }
 
   const fetchQuizWithQA = async () => {
-    let res = await getQuizWithQA(selectedQuiz.value); // console.log('>>> res: ', res);
+    let res = await getQuizWithQA(selectedQuiz.value);// console.log('>>> res fetchQuizWithQA: ', res);
     if (res && res.EC === 0) {
       // res have imageFile base64
       // convert imageFile from 'base64 string' to 'file object' to show display
@@ -182,22 +183,15 @@ const QuizQA = (props) => {
     }
   }
 
+  //----------------------------------------------------------------------------------------------------------------------
   const handleSubmitQuestionForQuiz = async () => {
     console.log('>>> data after process: ', questions, selectedQuiz);
-    /**
- * trong map ko chờ, nên phải thêm Promise.all để nó chờ
- * Promise.all: 
- *  - đảm bảo all request api đều đc chạy,
- *  - ko chạy theo trình tự mà chạy song song => đảm bảo tốc độ nhanh
- *  -> dẫn đến thứ tự chạy lộn xộn
- * */
 
     // validate
     if (_.isEmpty(selectedQuiz)) {
       toast.error('Please choose a Quiz!');
       return;
     }
-
     let isValidAnswer = false;
     let isValidQuestion = false;
     for (let i = 0; i < questions.length; i++) {
@@ -226,27 +220,34 @@ const QuizQA = (props) => {
       if (isValidAnswer === true) return;
     }
 
-
     // submit questions
-    let q, a = {};
-    for (const question of questions) {
-      q = await postCreateNewQuestionForAdmin(
-        +selectedQuiz.value, question.description, question.imageFile)
-      // console.log('>>> check q: ', q);
-
-      // submit answers
-      for (const answer of question.answers) {
-        a = await postCreateNewAnswerForAdmin(
-          answer.description, answer.isCorrect, q.DT.id)
-        // console.log('>>> check a: ', a);
+    let questionClone = _.cloneDeep(questions);
+    for (let i = 0; i < questionClone.length; i++) {
+      if (questionClone[i].imageFile) {
+        questionClone[i].imageFile = await toBase64(questionClone[i].imageFile);
+        questionClone[i].imageName = '';
       }
     }
 
-    if (q.EC === 0 && a.EC === 0) {
-      toast.success('Create question and answer successfully.')
-      setQuestions(initQuestion);
+    let res = await postUpsertQA({
+      'quizId': selectedQuiz.value,
+      'questions': questionClone
+    });
+
+    if (res.EC === 0) {
+      toast.success(res.EM);
+      fetchQuizWithQA();//do Id của chúng ta (random) khác với Id lưu ở DB nên sau khi lưu cần fetch lại data, đảm bảo lần sau update đúng
     }
   }
+
+  // return promise, convert object File to Base64 image
+  const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
+  //----------------------------------------------------------------------------------------------------------------------
 
   const handlePreviewImage = (question) => {
     setIsPreviewImage(true);

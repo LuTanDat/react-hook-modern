@@ -24,7 +24,7 @@ const ModalUpdateQuiz = (props) => {
   }
 
   useEffect(() => {
-    console.log('dataUpdate changed:', dataUpdate);
+    // console.log('dataUpdate changed:', dataUpdate);
     if (!_.isEmpty(dataUpdate)) {
       setName(dataUpdate.name)
       setDescription(dataUpdate.description)
