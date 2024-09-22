@@ -61,12 +61,12 @@ const TableQuiz = (props) => {
                 <td>{item.description}</td>
                 <td>{item.difficulty}</td>
                 <td>
-                  <button
+                  {/* <button
                     className="btn btn-secondary"
                   // onClick={() => handleClickBtnDetail(item)}
                   >
                     View
-                  </button>
+                  </button> */}
                   <button
                     className="btn btn-warning mx-3"
                     onClick={() => handleClickBtnUpdate(item)}

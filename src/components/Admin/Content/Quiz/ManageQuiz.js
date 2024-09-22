@@ -139,7 +139,7 @@ const ManageQuiz = () => {
         <Accordion.Item eventKey="2">
           <Accordion.Header>
             <div className="title">
-              Assign Quiz for User
+              Assign Quiz to User
             </div>
           </Accordion.Header>
           <Accordion.Body>
