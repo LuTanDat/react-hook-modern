@@ -8,7 +8,12 @@ import { v4 as uuidv4 } from 'uuid'; // generate unique id
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
 import { toast } from 'react-toastify';
-import { getAllQuizForAdmin, postCreateNewQuestionForAdmin, postCreateNewAnswerForAdmin } from '../../../../services/apiServices';
+import {
+  getAllQuizForAdmin,
+  postCreateNewQuestionForAdmin,
+  postCreateNewAnswerForAdmin,
+  getQuizWithQA,
+} from '../../../../services/apiServices';
 
 const QuizQA = (props) => {
 
@@ -39,6 +44,11 @@ const QuizQA = (props) => {
     fetchListQuiz();
   }, [])
 
+  useEffect(() => {
+    if (!_.isEmpty(selectedQuiz))
+      fetchQuizWithQA()
+  }, [selectedQuiz])
+
   const fetchListQuiz = async () => {
     let res = await getAllQuizForAdmin();
     if (res && res.EC === 0) {
@@ -51,6 +61,36 @@ const QuizQA = (props) => {
       setListQuiz(newQuiz)
     }
   }
+
+  //----------------------------------------------------------------------------------------------
+  // return a promise that resolves with a File instance ~ await
+  function urltoFile(url, filename, mimeType) {
+    return fetch(url)
+      .then(res => res.arrayBuffer())
+      .then(buf => new File([buf], filename, { type: mimeType }));
+  }
+
+  const fetchQuizWithQA = async () => {
+    let res = await getQuizWithQA(selectedQuiz.value); // console.log('>>> res: ', res);
+    if (res && res.EC === 0) {
+      // res have imageFile base64
+      // convert imageFile from 'base64 string' to 'file object' to show display
+      let newQA = [];
+      for (let i = 0; i < res.DT.qa.length; i++) {
+        let q = res.DT.qa[i];
+        if (q.imageFile) {
+          q.imageFile = await urltoFile(`data:image/png;base64,${q.imageFile}`, `Question ${q.id}.png`, 'image/png')
+          q.imageName = q.imageFile.name;
+        }
+        newQA.push(q);
+      }
+      setQuestions(newQA); //console.log('>>> newQA: ', newQA);
+      toast.success(res.EM)
+    } else {
+      toast.error(res.EM)
+    }
+  }
+  //----------------------------------------------------------------------------------------------
 
   const handleAddRemoveQuestion = (type, id) => {
     if (type === 'ADD') {
