@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 
 const CountDown = (props) => {
-  const [count, setCount] = useState(5);
+  const [count, setCount] = useState(300);
 
   useEffect(() => {
     // cach 1
