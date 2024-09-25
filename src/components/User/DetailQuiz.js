@@ -169,6 +169,7 @@ const DetailQuiz = () => {
         <div className="right-content">
           <RightContent
             dataQuiz={dataQuiz}
+            handleFinishQuiz={handleFinishQuiz}
           />
         </div>
       </div>
