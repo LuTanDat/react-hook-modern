@@ -42,6 +42,7 @@ const DetailQuiz = () => {
             item.answers.isSelected = false; // add field to check if user selected answer or not?
             answers.push(item.answers)
           })
+          answers = _.orderBy(answers, ['id'], ['asc']);
           return { questionId: key, answers, questionDescription, image }
         })
         .value()
