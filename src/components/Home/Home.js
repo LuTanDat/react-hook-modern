@@ -1,8 +1,10 @@
 import { useSelector } from 'react-redux';
 import videoHomePage from '../../assets/video-homepage.mp4'
 import { useNavigate } from 'react-router-dom';
+import { useTranslation, Trans } from 'react-i18next';
 
 const Home = (props) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
@@ -15,11 +17,11 @@ const Home = (props) => {
         />
       </video>
       <div className='homepage-content'>
-        <div className='title-1'>Make forms worth filling out</div>
-        <div className='title-2'>Get more data—like signups, feedback, and anything else—with forms designed to be refreshingly different.</div>
+        <div className='title-1'> {t('homepage.title1')}</div>
+        <div className='title-2'>{t('homepage.title2')}</div>
         <div className='title-3'>
           {isAuthenticated === false ?
-            <button className='btn-title-3' onClick={() => { navigate('/login') }}>Get started. It's free</button>
+            <button className='btn-title-3' onClick={() => { navigate('/login') }}>{t('homepage.title3.login  ')}</button>
             :
             <button className='btn-title-3' onClick={() => { navigate('/users') }}>Welcome back, Doing Quiz Now</button>
           }

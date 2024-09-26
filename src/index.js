@@ -6,6 +6,7 @@ import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'; // dam bao load xong data tu localstorage len roi moi chay react
 import { BrowserRouter } from "react-router-dom";
 import Layout from './Layout';
+import i18n from './utils/i18n';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'nprogress/nprogress.css'; // hien thi thanh tien trinh khi load api
 import 'react-perfect-scrollbar/dist/css/styles.css'; // tao scroll bar

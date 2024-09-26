@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Suspense } from 'react';
 
 import User from './components/User/User';
 import Admin from './components/Admin/Admin';
@@ -29,7 +30,7 @@ const NotFound = () => {
 
 const Layout = () => {
   return (
-    <>
+    <Suspense fallback="...is loading">
       <Routes>
         <Route path="/" element={<App />}> {/*Nested Routes */}
           <Route index element={<Home />} />
@@ -70,7 +71,7 @@ const Layout = () => {
         pauseOnHover
         theme="light"
       />
-    </>
+    </Suspense>
   )
 }
 
