@@ -118,7 +118,7 @@ const getOverView = () => {
 }
 
 const postRefreshToken = (email, refresh_token) => {
-  return axios.get(`api/v1/refresh-token`, { email, refresh_token })
+  return axios.post(`api/v1/refresh-token`, { email, refresh_token })
 }
 
 export {

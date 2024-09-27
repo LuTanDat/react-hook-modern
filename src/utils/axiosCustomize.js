@@ -77,15 +77,15 @@ instance.interceptors.response.use(async (response) => {
 
       // Cập nhật access_token và refresh_token mới vào Redux store
       store.dispatch({
-        type: 'UPDATE_TOKENS',
+        type: 'REFRESH_TOKEN',
         payload: {
-          access_token: res.data.DT.access_token, // Token mới lấy từ API
-          refresh_token: res.data.DT.refresh_token, // Refresh token mới lấy từ API
+          access_token: res.DT.access_token, // Token mới lấy từ API
+          refresh_token: res.DT.refresh_token, // Refresh token mới lấy từ API
         },
       });
 
       // Gắn access_token mới vào header Authorization của request ban đầu
-      originalRequest.headers['Authorization'] = `Bearer ${res.data.DT.access_token}`;
+      originalRequest.headers['Authorization'] = `Bearer ${res.DT.access_token}`;
 
       // Gửi lại request ban đầu với token mới
       return instance(originalRequest);

@@ -22,7 +22,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state, account: {}, isAuthenticated: false,
             };
-        case 'UPDATE_TOKENS':
+        case 'REFRESH_TOKEN':
             return {
                 ...state,
                 account: {
