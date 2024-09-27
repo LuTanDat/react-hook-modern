@@ -1,4 +1,4 @@
-import 'react-pro-sidebar/dist/css/styles.css';
+// import 'react-pro-sidebar/dist/css/styles.css';
 import {
   ProSidebar,
   Menu,

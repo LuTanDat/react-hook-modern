@@ -1,5 +1,7 @@
-$highlight-color: #dee2ec;
+// Your variable overrides
+$sidebar-bg-color: #3c4b64;
 
+@import '~react-pro-sidebar/dist/scss/styles.scss';
 
 .admin-container {
   display: flex;
