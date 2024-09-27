@@ -1,7 +1,8 @@
 import axios from "axios";
 import NProgress from 'nprogress' // loading bars
 import { store } from '../redux/store'
-
+import axiosRetry from 'axios-retry'; // auto refresh-token
+import { postRefreshToken } from "../services/apiServices";
 
 //----------------------------------------------------------------------------------------------
 
@@ -42,24 +43,61 @@ instance.interceptors.request.use(function (config) {
   return Promise.reject(error);   // Do something with request error
 });
 
+// Sử dụng axios-retry để retry khi gặp lỗi liên quan đến token
+axiosRetry(instance, {
+  retries: 1, // Số lần retry tối đa, ở đây là 1 lần
+  retryCondition: (error) => {
+    return error.response && error.response.data && error.response.data.EC === -999; // Chỉ retry nếu token hết hạn
+  },
+  retryDelay: (retryCount) => retryCount * 1000, // Đợi 1 giây trước khi retry
+});
+
 // Add a response interceptor
-instance.interceptors.response.use(function (response) {
+instance.interceptors.response.use(async (response) => {
   // console.log('>>> check res interceptor: ', response);
   NProgress.done();
-
-  // Any status code that lie within the range of 2xx cause this function to trigger. Do something with response data
   return response && response.data ? response.data : response; // custom
-}, function (error) {
-  // console.log('>>> check res interceptor: ', error);
+}, async (error) => {
+  console.log('>>> check res interceptor: ', error);
   NProgress.done();
 
-  // token expired
-  if (error.response.data && error.response.data.EC === -999) {
-    window.location.href = '/login';
+
+
+  const originalRequest = error.config; // Lưu lại cấu hình của request ban đầu
+  const { account } = store?.getState()?.user || {}; // Lấy thông tin người dùng từ Redux store
+  const { email, refresh_token } = account || {}; // Lấy email và refresh_token từ Redux store
+
+  // Kiểm tra nếu lỗi là do token hết hạn và request chưa retry
+  if (error.response && error.response.data.EC === -999 && !originalRequest._retry) {
+    originalRequest._retry = true; // Đánh dấu request đã retry để tránh lặp vô hạn
+
+    try {
+      // Gọi API refresh token với email và refresh_token
+      const res = await postRefreshToken(email, refresh_token);
+
+      // Cập nhật access_token và refresh_token mới vào Redux store
+      store.dispatch({
+        type: 'UPDATE_TOKENS',
+        payload: {
+          access_token: res.data.DT.access_token, // Token mới lấy từ API
+          refresh_token: res.data.DT.refresh_token, // Refresh token mới lấy từ API
+        },
+      });
+
+      // Gắn access_token mới vào header Authorization của request ban đầu
+      originalRequest.headers['Authorization'] = `Bearer ${res.data.DT.access_token}`;
+
+      // Gửi lại request ban đầu với token mới
+      return instance(originalRequest);
+    } catch (refreshError) {
+      return Promise.reject(refreshError); // Nếu refresh token thất bại, trả về lỗi refreshError
+    }
   }
 
+
+
   return error && error.response && error.response.data
-    ? error.response.data : Promise.reject(error); // custom
+    ? error.response.data : Promise.reject(error); // Nếu không phải lỗi do token hết hạn, trả về lỗi gốc
 })
 
 export default instance
