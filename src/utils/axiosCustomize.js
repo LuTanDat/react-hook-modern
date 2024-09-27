@@ -2,6 +2,9 @@ import axios from "axios";
 import NProgress from 'nprogress' // loading bars
 import { store } from '../redux/store'
 
+
+//----------------------------------------------------------------------------------------------
+
 NProgress.configure({
   showSpinner: false,
   // easing: 'ease',
@@ -14,19 +17,16 @@ NProgress.configure({
   trickleSpeed: 100,
 })
 
-
 const instance = axios.create({
   baseURL: 'http://localhost:8081/',
   // timeout: 1000,
   // headers: {'X-Custom-Header': 'foobar'} // token
 });
 
-
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------
 
 /**
- * component -> axios config -> request 
- * response <- axios config <-
+ * component -> axios config -> request api -> axios config -> response
  * tuong tu nhu middleware
  */
 
