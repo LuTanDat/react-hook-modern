@@ -8,6 +8,7 @@ import { postLogout } from '../../services/apiServices';
 import { toast } from 'react-toastify';
 import { doLogout } from '../../redux/action/userAction';
 import Language from './Language';
+import { FaReact } from "react-icons/fa";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -38,7 +39,10 @@ const Header = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <NavLink to="/" className='navbar-brand'>React-Bootstrap</NavLink>
+        <NavLink to="/" className='navbar-brand'>
+          <FaReact className="brand-icon" />
+          React-Bootstrap
+        </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">

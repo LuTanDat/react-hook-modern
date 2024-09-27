@@ -29,6 +29,24 @@ body {
 
 .app-container {
   .header-container {
+    .navbar-brand {
+      .brand-icon {
+        margin-right: 10px;
+        color       : #00d4ff;
+        animation   : spin 5s infinite linear;
+      }
+
+      @keyframes spin {
+        from {
+          transform: scale(1) rotate(0deg);
+        }
+
+        to {
+          transform: scale(1) rotate(360deg);
+        }
+      }
+    }
+
     .navbar {
       z-index         : 10;
       padding-top     : 15px;

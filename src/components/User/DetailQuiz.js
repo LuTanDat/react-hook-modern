@@ -1,11 +1,12 @@
 import './DetailQuiz.scss'
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { getDataQuiz, postSubmitQuiz } from "../../services/apiServices";
 import _ from 'lodash';
 import Question from './Question';
 import ModalResult from './ModalResult';
 import RightContent from './Content/RightContent';
+import { Breadcrumb } from 'react-bootstrap';
 
 const DetailQuiz = () => {
   const location = useLocation();
@@ -133,6 +134,15 @@ const DetailQuiz = () => {
 
   return (
     <>
+      <Breadcrumb className='quiz-detail-new-header'>
+        <NavLink to='/' className='breadcrumb-item'>
+          Home
+        </NavLink>
+        <NavLink to='/users' className='breadcrumb-item'>
+          Users
+        </NavLink>
+        <Breadcrumb.Item active>Làm bài Quiz</Breadcrumb.Item>
+      </Breadcrumb>
       <div className="detail-quiz-container">
         <div className="left-content">
           <div className="title">
