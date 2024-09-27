@@ -117,9 +117,13 @@ const getOverView = () => {
   return axios.get(`api/v1/overview`)
 }
 
+const postRefreshToken = (email, refresh_token) => {
+  return axios.get(`api/v1/refresh-token`, { email, refresh_token })
+}
+
 export {
   postAddNewUsers, getAllUsers, putUpdateUser, deleteUsers, getUsersWithPaginate,
-  postLogin, postRegister, postLogout,
+  postLogin, postRegister, postLogout, postRefreshToken,
   getQuizByUser, getDataQuiz, postSubmitQuiz,
   postCreateNewQuiz, getAllQuizForAdmin, deleteQuizForAdmin, putUpdateQuizForAdmin,
   postCreateNewQuestionForAdmin, postCreateNewAnswerForAdmin, getOverView,

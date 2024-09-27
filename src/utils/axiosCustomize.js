@@ -1,6 +1,7 @@
 import axios from "axios";
 import NProgress from 'nprogress' // loading bars
 import { store } from '../redux/store'
+import axiosRetry from 'axios-retry'; // refresh-token
 
 NProgress.configure({
   showSpinner: false,
@@ -52,8 +53,15 @@ instance.interceptors.response.use(function (response) {
   // Do something with response data
   return response && response.data ? response.data : response; // custom
 }, function (error) {
-  NProgress.done();
   // console.log('>>> check res interceptor: ', error);
+  NProgress.done();
+
+  // token expired
+  if (error.response.data && error.response.data.EC === -999) {
+    window.location.href = '/login';
+  }
+
+
 
   // Any status codes that falls outside the range of 2xx cause this function to trigger
   // Do something with response error
