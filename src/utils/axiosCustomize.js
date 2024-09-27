@@ -1,7 +1,6 @@
 import axios from "axios";
 import NProgress from 'nprogress' // loading bars
 import { store } from '../redux/store'
-import axiosRetry from 'axios-retry'; // refresh-token
 
 NProgress.configure({
   showSpinner: false,
@@ -34,23 +33,21 @@ const instance = axios.create({
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
   const access_token = store?.getState()?.user?.account?.access_token;
-  config.headers["Authorization"] = `Bearer ${access_token}`;
-
+  if (access_token) {
+    config.headers["Authorization"] = `Bearer ${access_token}`;
+  }
   NProgress.start();
-  // Do something before request is sent
-  return config;
+  return config;                  // Do something before request is sent
 }, function (error) {
-  // Do something with request error
-  return Promise.reject(error);
+  return Promise.reject(error);   // Do something with request error
 });
 
 // Add a response interceptor
 instance.interceptors.response.use(function (response) {
-  NProgress.done();
   // console.log('>>> check res interceptor: ', response);
+  NProgress.done();
 
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
+  // Any status code that lie within the range of 2xx cause this function to trigger. Do something with response data
   return response && response.data ? response.data : response; // custom
 }, function (error) {
   // console.log('>>> check res interceptor: ', error);
@@ -61,10 +58,6 @@ instance.interceptors.response.use(function (response) {
     window.location.href = '/login';
   }
 
-
-
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
-  // Do something with response error
   return error && error.response && error.response.data
     ? error.response.data : Promise.reject(error); // custom
 })
