@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
 import videoHomePage from '../../assets/video-homepage.mp4'
 import { useNavigate } from 'react-router-dom';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next'; // import
 
 const Home = (props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(); // use hook
   const navigate = useNavigate();
   const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
@@ -21,9 +21,9 @@ const Home = (props) => {
         <div className='title-2'>{t('homepage.title2')}</div>
         <div className='title-3'>
           {isAuthenticated === false ?
-            <button className='btn-title-3' onClick={() => { navigate('/login') }}>{t('homepage.title3.login  ')}</button>
+            <button className='btn-title-3' onClick={() => { navigate('/login') }}>{t('homepage.title3.login')}</button>
             :
-            <button className='btn-title-3' onClick={() => { navigate('/users') }}>Welcome back, Doing Quiz Now</button>
+            <button className='btn-title-3' onClick={() => { navigate('/users') }}>{t('homepage.title3.doing')}</button>
           }
         </div>
       </div>
