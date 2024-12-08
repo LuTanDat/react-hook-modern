@@ -3,6 +3,7 @@ import videoHomePage from '../../assets/video-homepage.mp4'
 import { useNavigate } from 'react-router-dom';
 import { useTranslation, Trans } from 'react-i18next'; // import
 
+
 const Home = (props) => {
   const { t } = useTranslation(); // use hook
   const navigate = useNavigate();
