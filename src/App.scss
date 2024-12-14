@@ -8,9 +8,47 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (min-width: 1450px) {
+
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
+    max-width: 1400px !important;
+  }
+}
+
 .app-container {
   .header-container {
-    .navbar-nav {
+    .navbar {
+      z-index         : 10;
+      padding-top     : 15px;
+      background-color: rgba(0, 0, 0, 0) !important;
+
+      .btn-login {
+        border-radius: 5px;
+        margin-right : 15px;
+        padding      : 0 15px;
+        border       : 1px solid #535353;
+        height       : 40px;
+      }
+
+      .btn-signup {
+        border-radius   : 5px;
+        margin-right    : 15px;
+        padding         : 0 15px;
+        border          : 1px solid #535353;
+        background-color: #000000;
+        color           : white;
+        height          : 40px;
+
+        &:hover {
+          background-color: #303030;
+        }
+      }
+
       .nav-link {
         &.active {
           color        : orange;
@@ -20,4 +58,49 @@ body {
       }
     }
   }
+}
+
+.homepage-container {
+  .homepage-content {
+    position      : relative;
+    padding       : 100px;
+    width         : 50%;
+    display       : flex;
+    flex-direction: column;
+    gap           : 30px;
+
+    .title-1 {
+      font-size  : 70px;
+      font-weight: 400;
+    }
+
+    .title-2 {
+      font-size: 22px;
+    }
+
+    .title-3 {
+      font-size: 22px;
+
+      .btn-title-3 {
+        border-radius   : 5px;
+        padding         : 0 15px;
+        border          : 1px solid #535353;
+        background-color: #000000;
+        color           : white;
+        height          : 40px;
+
+        &:hover {
+          background-color: #303030;
+        }
+      }
+    }
+  }
+}
+
+video {
+  position: fixed;
+  bottom  : 0;
+  width   : 100vw;
+  height  : auto;
+
 }
