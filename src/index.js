@@ -23,8 +23,9 @@ root.render(
         <Route path="/" element={<App />}> {/*Nested Routes */}
           <Route index element={<Home />} />
           <Route path="users" element={<User />} />
-          <Route path="admin" element={<Admin />} />
         </Route>
+
+        <Route path="admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
     {/* </React.StrictMode> */}
