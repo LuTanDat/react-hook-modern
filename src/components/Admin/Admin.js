@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import { FaBars } from 'react-icons/fa';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Admin = (props) => {
@@ -15,7 +16,17 @@ const Admin = (props) => {
       </div>
       <div className="admin-content">
         <div className='admin-header'>
-          <FaBars onClick={() => setCollapsed(!collapsed)} />
+          <span onClick={() => setCollapsed(!collapsed)}>
+            <FaBars className='leftside' />
+          </span>
+          <div className='rightside'>
+            <NavDropdown title="Setting" id="basic-nav-dropdown">
+              <NavDropdown.Item >Profile</NavDropdown.Item>
+              <NavDropdown.Item >Log out</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item >Other</NavDropdown.Item>
+            </NavDropdown>
+          </div>
         </div>
         <div className='admin-main'>
           <Outlet />

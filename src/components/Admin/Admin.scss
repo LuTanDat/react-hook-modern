@@ -47,13 +47,33 @@ $highlight-color: #dee2ec;
     width  : 100%;
 
     .admin-header {
-      height: 40px;
-      border: 1px solid green;
+      height         : 60px;
+      border-bottom  : 1px solid #ccc;
+      display        : flex;
+      align-items    : center;
+      justify-content: space-between;
+      padding        : 0 20px 0 10px;
+
+      .leftside {
+        cursor   : pointer;
+        font-size: 20px;
+        color    : #666666;
+      }
+
+      .rightside {
+        display    : flex;
+        align-items: center;
+        gap        : 15px;
+      }
     }
 
     .admin-main {
-      border    : 1px solid red;
-      min-height: 200px;
+      height: calc(100vh - 60px);
+
+      .user-pagination {
+        display        : flex;
+        justify-content: center;
+      }
     }
   }
 }
