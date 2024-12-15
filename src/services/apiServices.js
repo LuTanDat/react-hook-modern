@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios from '../utils/axiosCustomize'; // sau nay de thay doi path, cau hinh request, response
+
 
 const postAddNewUsers = async (email, password, username, role, image) => {
   // submit data
@@ -9,7 +10,7 @@ const postAddNewUsers = async (email, password, username, role, image) => {
   data.append('role', role);
   data.append('userImage', image);
 
-  return await axios.post('http://localhost:8081/api/v1/participant', data)
+  return await axios.post('api/v1/participant', data)
 }
 
 export {
