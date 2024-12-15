@@ -4,7 +4,7 @@
     align-items  : center;
     gap          : 5px;
     border       : 1px solid #c2c0c0;
-    width        : fit-content; // width ôm vừa nội dung thôi chứ không chiếm nguyên dòng
+    width        : fit-content;
     padding      : 5px 10px;
     border-radius: 8px;
     background   : #eee;
@@ -27,6 +27,22 @@
     img {
       max-width : 100%;
       max-height: 100%;
+    }
+  }
+}
+
+
+.manage-user-container {
+  padding: 10px;
+
+  .title {
+    font-weight: 600;
+    font-size  : 20px;
+  }
+
+  .users-content {
+    .btn-add-new {
+      margin: 15px 0;
     }
   }
 }
