@@ -108,7 +108,7 @@ const Register = () => {
           <button className='btn-register' onClick={() => handleRegister()}>Create my free account</button>
         </div>
         <div className='text-center'>
-          <span className='back' onClick={() => navigate('/')}>
+          <span className='back' onClick={() => navigate('/login')}>
             &#60;&#60; Go to Login page
           </span>
         </div>
