@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postLogin } from '../../services/apiServices';
 import { toast } from 'react-toastify';
+import { VscEye, VscEyeClosed } from "react-icons/vsc";
 
 const Login = () => {
   const navigate = useNavigate()
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (email) => {
     return String(email)
@@ -45,7 +47,7 @@ const Login = () => {
     <div className="login-container">
       <div className="header">
         <span>Don't have an account yet?</span>
-        <button>Sign up</button>
+        <button onClick={() => navigate('/register')}>Sign up</button>
         <span>Contact us</span>
       </div>
       <div className="title col-4 mx-auto">
@@ -65,15 +67,24 @@ const Login = () => {
           >
           </input>
         </div>
-        <div className="form-group">
+        <div className="form-group pass-group">
           <label>Password</label>
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             className="form-control"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           >
           </input>
+
+          {showPassword ?
+            <VscEye className='icon-eye'
+              onClick={() => setShowPassword(false)}
+            /> :
+            <VscEyeClosed className='icon-eye'
+              onClick={() => setShowPassword(true)}
+            />
+          }
         </div>
         <span className='forgot-password'>Forgot password?</span>
         <div>
