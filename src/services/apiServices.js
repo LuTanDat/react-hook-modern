@@ -1,5 +1,8 @@
 import axios from '../utils/axiosCustomize'; // sau nay de thay doi path, cau hinh request, response
 
+const postLogin = (email, password) => {
+  return axios.post(`api/v1/login`, { email, password })
+}
 
 const postAddNewUsers = (email, password, username, role, image) => {
   // submit data
@@ -14,6 +17,7 @@ const postAddNewUsers = (email, password, username, role, image) => {
 }
 
 export {
+  postLogin,
   postAddNewUsers,
 
 }
