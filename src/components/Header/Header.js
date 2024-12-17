@@ -35,7 +35,7 @@ const Header = () => {
             <Nav.Link href="/users">Users</Nav.Link>
             <Nav.Link href="/admin">Admin</Nav.Link> */}
           </Nav>
-          <Nav>
+          <Nav className='d-flex align-items-center gap-3'>
             {!isAuthenticated ?
               <>
                 <button className='btn-login' onClick={() => handleLogin()}>Log in</button>
