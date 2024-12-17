@@ -1,7 +1,7 @@
 import axios from '../utils/axiosCustomize'; // sau nay de thay doi path, cau hinh request, response
 
 const postLogin = (email, password) => {
-  return axios.post(`api/v1/login`, { email, password })
+  return axios.post(`api/v1/login`, { email, password, delay: 5000 })
 }
 
 const postRegister = (email, username, password) => {
