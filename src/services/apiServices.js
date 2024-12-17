@@ -4,6 +4,10 @@ const postLogin = (email, password) => {
   return axios.post(`api/v1/login`, { email, password })
 }
 
+const postRegister = (email, username, password) => {
+  return axios.post(`api/v1/register`, { email, username, password })
+}
+
 const postAddNewUsers = (email, password, username, role, image) => {
   // submit data
   const data = new FormData(); // dung cho du lieu lon nhu file, video
@@ -17,7 +21,7 @@ const postAddNewUsers = (email, password, username, role, image) => {
 }
 
 export {
-  postLogin,
+  postLogin, postRegister,
   postAddNewUsers,
 
 }
