@@ -8,6 +8,10 @@ const postRegister = (email, username, password) => {
   return axios.post(`api/v1/register`, { email, username, password })
 }
 
+const getQuizByUser = () => {
+  return axios.get('api/v1/quiz-by-participant')
+}
+
 const postAddNewUsers = (email, password, username, role, image) => {
   // submit data
   const data = new FormData(); // dung cho du lieu lon nhu file, video
@@ -21,7 +25,7 @@ const postAddNewUsers = (email, password, username, role, image) => {
 }
 
 export {
-  postLogin, postRegister,
+  postLogin, postRegister, getQuizByUser,
   postAddNewUsers,
 
 }
