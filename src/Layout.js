@@ -15,6 +15,14 @@ import Login from './components/Auth/Login';
 import Register from "./components/Auth/Register";
 import ListQuiz from "./components/User/ListQuiz";
 
+const NotFound = () => {
+  return (
+    <div className='container alert alert-danger text-center mt-3'>
+      <span>404 Not found data with current URL</span>
+    </div>
+  )
+}
+
 const Layout = () => {
   return (
     <>
@@ -32,7 +40,7 @@ const Layout = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-
+        <Route path="*" element={<NotFound />} />
 
 
 
