@@ -1,6 +1,6 @@
 import axios from "axios";
 import NProgress from 'nprogress' // loading bars
-import { store } from '../redux/store'
+import { store } from '../redux/store' // get state redux outside component
 import axiosRetry from 'axios-retry'; // auto refresh-token
 import { postRefreshToken } from "../services/apiServices";
 
