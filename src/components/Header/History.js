@@ -48,7 +48,7 @@ const History = () => {
           })}
           {history && history.length === 0 &&
             <tr>
-              <td colSpan={'5'} className="text-center">Not found user</td>
+              <td colSpan={'5'} className="text-center">Not found history</td>
             </tr>
           }
         </tbody>
