@@ -1,5 +1,5 @@
 
-import { FETCH_USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS } from '../action/userAction';
+import { FETCH_USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS, UPDATE_PROFILE_SUCCESS } from '../action/userAction';
 
 const INITIAL_STATE = {
     account: {
@@ -21,6 +21,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case USER_LOGOUT_SUCCESS:
             return {
                 ...state, account: {}, isAuthenticated: false,
+            };
+        case UPDATE_PROFILE_SUCCESS:
+            return {
+                ...state, account: {
+                    ...state.account,
+                    username: action.payload.username,
+                    image: action.payload.image ? action.payload.image : state.account.image,
+                },
             };
         case 'REFRESH_TOKEN':
             return {

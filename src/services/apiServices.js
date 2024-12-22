@@ -28,6 +28,24 @@ const putUpdateUser = (id, username, role, image) => {
   return axios.put('api/v1/participant', data)
 }
 
+const postUpdateProfile = (username, image) => {
+  // submit data
+  const data = new FormData(); // dung cho du lieu lon nhu file, video
+  data.append('username', username);
+  data.append('userImage', image);
+
+  return axios.post('api/v1/profile', data)
+}
+
+const postChangePassword = (current_password, new_password) => {
+  return axios.post(`api/v1/change-password`, { current_password, new_password })
+}
+
+const getHistory = () => {
+  return axios.get('api/v1/history');
+}
+
+
 // search: axios delete with url encoded
 const deleteUsers = (userId) => {
   return axios.delete('api/v1/participant', { data: { id: userId } })
@@ -127,5 +145,5 @@ export {
   getQuizByUser, getDataQuiz, postSubmitQuiz,
   postCreateNewQuiz, getAllQuizForAdmin, deleteQuizForAdmin, putUpdateQuizForAdmin,
   postCreateNewQuestionForAdmin, postCreateNewAnswerForAdmin, getOverView,
-  postAssignQuiz, getQuizWithQA, postUpsertQA,
+  postAssignQuiz, getQuizWithQA, postUpsertQA, postUpdateProfile, postChangePassword, getHistory,
 }

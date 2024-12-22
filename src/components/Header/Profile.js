@@ -2,6 +2,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import YourInformation from './YourInformation';
+import Password from './Password';
+import History from './History';
 
 const Profile = (props) => {
   const { show, setShow } = props;
@@ -32,24 +35,24 @@ const Profile = (props) => {
             id="uncontrolled-tab-example"
             className="mb-3"
           >
-            <Tab eventKey="home" title="Main info">
-              Your's infomation
+            <Tab eventKey="home" title="Your's info">
+              <YourInformation />
             </Tab>
-            <Tab eventKey="profile" title="Password">
-              Change password
+            <Tab eventKey="profile" title="Change Password">
+              <Password />
             </Tab>
             <Tab eventKey="contact" title="History">
-              History
+              <History />
             </Tab>
           </Tabs>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          {/* <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={() => handleSubmitProfileUser()}>
             Save
-          </Button>
+          </Button> */}
         </Modal.Footer>
       </Modal>
     </>

@@ -10,6 +10,7 @@ import { postLogout } from '../../services/apiServices';
 import { useDispatch, useSelector } from 'react-redux';
 import { doLogout } from '../../redux/action/userAction';
 import { toast } from 'react-toastify';
+import Profile from '../Header/Profile';
 
 
 const Admin = (props) => {
@@ -18,6 +19,7 @@ const Admin = (props) => {
   const navigate = useNavigate();
 
   const account = useSelector(state => state.user.account);
+  const [show, setShow] = useState(false);
 
   const handleLogout = async () => {
     let res = await postLogout(account.email, account.refresh_token)
@@ -41,7 +43,7 @@ const Admin = (props) => {
           <div className='rightside'>
             <Language />
             <NavDropdown title="Setting" id="basic-nav-dropdown">
-              <NavDropdown.Item >Profile</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => setShow(true)}>Profile</NavDropdown.Item>
               <NavDropdown.Item onClick={() => handleLogout()}>Log out</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item >Other</NavDropdown.Item>
@@ -54,6 +56,10 @@ const Admin = (props) => {
           </PerfectScrollbar>
         </div>
       </div>
+      <Profile
+        show={show}
+        setShow={setShow}
+      />
     </div>
   )
 }
