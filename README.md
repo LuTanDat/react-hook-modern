@@ -1,3 +1,14 @@
+# What's next?
+
+- performance:
+
+  - useCallback / useMemo
+  - upgrade to React Hook Form or React Formik
+
+- learn more about backend
+  .
+  .
+
 #Node.js v14.17.0
 
 # Getting Started with Create React App
