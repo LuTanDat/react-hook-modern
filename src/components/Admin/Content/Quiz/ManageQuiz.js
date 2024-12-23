@@ -46,6 +46,7 @@ const ManageQuiz = () => {
       toast.success(res.EM)
       setName('')
       setDescription('')
+      setType({})
       setImage(null)
       setPreviewImg('')
       setIsCreatedNewQuiz(true);
@@ -89,7 +90,7 @@ const ManageQuiz = () => {
               </div>
               <div className='my-3'>
                 <Select
-                  defaultValue={type}
+                  value={type}
                   onChange={setType}
                   options={options}
                   placeholder={'Quiz type....'}

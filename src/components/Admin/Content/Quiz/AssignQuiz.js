@@ -47,6 +47,9 @@ const AssignQuiz = () => {
     // console.log('>>> handleAssign: ', res);
     if (res && res.EC === 0) {
       toast.success(res.EM)
+      // Đặt lại trạng thái về rỗng
+      setSelectedQuiz({});
+      setSelectedUser({});
     } else {
       toast.error(res.EM)
     }
@@ -57,7 +60,7 @@ const AssignQuiz = () => {
       <div className='col-6 form-group'>
         <label className='mb-2'>Select Quiz</label>
         <Select
-          defaultValue={selectedQuiz}
+          value={selectedQuiz}
           onChange={setSelectedQuiz}
           options={listQuiz}
         />
@@ -65,7 +68,7 @@ const AssignQuiz = () => {
       <div className='col-6 form-group'>
         <label className='mb-2'>Select User</label>
         <Select
-          defaultValue={selectedUser}
+          value={selectedUser}
           onChange={setSelectedUser}
           options={listUsers}
         />
