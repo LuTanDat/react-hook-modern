@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import { useState } from 'react';
 import Lightbox from "react-awesome-lightbox";
-
+import { IoClose } from "react-icons/io5";
+import { IoCheckmarkDoneSharp } from "react-icons/io5";
 
 const Question = (props) => {
-  const { data } = props;// console.log('data detailQuiz: ', data);
+  const { data, isFinished, isShowAnswers } = props;
 
   const [isPreviewImage, setIsPreviewImage] = useState(false);
 
@@ -52,12 +53,26 @@ const Question = (props) => {
                   type="checkbox"
                   checked={a.isSelected}
                   onChange={(e) => handleHandCheckbox(e, a.id, data.questionId)}
+                  disabled={isFinished}
                 />
-                <label className="form-check-label" htmlFor={`flexCheckDefault ${index}`}>
+                <label
+                  className="form-check-label"
+                  htmlFor={`flexCheckDefault ${index}`}
+                  disabled={isFinished}
+                >
                   {a.description}
                 </label>
+                {isShowAnswers &&
+                  <>
+                    {a.isSelected === true && a.isCorrect === false &&
+                      <IoClose className='incorrect' />
+                    }
+                    {a.isCorrect === true &&
+                      <IoCheckmarkDoneSharp className='correct' />
+                    }
+                  </>
+                }
               </div>
-
             </div>
           )
         })}

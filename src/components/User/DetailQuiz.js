@@ -15,6 +15,8 @@ const DetailQuiz = () => {
   const [index, setIndex] = useState(0); //currentQuestion
   const [showModalResult, setShowModalResult] = useState(false);
   const [dataModalResult, setDataModalResult] = useState({});
+  const [isFinished, setIsFinished] = useState(false); // disable text when finished
+  const [isShowAnswers, setIsShowAnswers] = useState(false); // show answers when finished
 
   const quizId = params.id;
 
@@ -23,7 +25,8 @@ const DetailQuiz = () => {
   }, [quizId])
 
   const fetchDataQuiz = async () => { // che bien du lieu
-    let res = await getDataQuiz(quizId);// console.log('data backend: ', res);
+    let res = await getDataQuiz(quizId);
+    //console.log('DataQuiz backend: ', res);
 
     if (res && res.EC === 0) {
       let raw = res.DT; // du lieu goc return from backend
@@ -39,16 +42,20 @@ const DetailQuiz = () => {
               questionDescription = item.description;
               image = item.image;
             }
+
             // console.log('item answers: ', item.answers);// {id:...., description:....}
             item.answers.isSelected = false; // add field to check if user selected answer or not?
+            item.answers.isCorrect = false; // add field to check if user selected answer
+
             answers.push(item.answers)
           })
           answers = _.orderBy(answers, ['id'], ['asc']);
-          return { questionId: key, answers, questionDescription, image }
+
+          return { questionId: +key, answers, questionDescription, image }
         })
         .value()
 
-      // console.log('data: ', data)
+      // console.log('DataQuiz: ', data)
       setDataQuiz(data);
     }
   }
@@ -89,8 +96,9 @@ const DetailQuiz = () => {
   }
 
   const handleFinishQuiz = async () => { // che bien du lieu truoc khi submit
-    console.log('>>> data before build: ', dataQuiz);
-    if (!dataQuiz || dataQuiz.length === 0) return; // can nhac thoat som tranh loi tiem an
+    // console.log('>>> data before build: ', dataQuiz);
+    if (!dataQuiz || dataQuiz.length === 0 || isFinished) return; // can nhac thoat som tranh loi tiem an
+
     const payload = {
       quizId: +quizId,
       answers: []
@@ -119,14 +127,45 @@ const DetailQuiz = () => {
     //   });
     // });
 
-    console.log('>>> data after build: ', payload);
+    // console.log('>>> DataQuiz submit after build: ', payload);
 
-    // submit apis
+
+    // SUBMIT API
     let res = await postSubmitQuiz(payload);
-    console.log('>>> res submitted: ', res);
+    // console.log('>>> res submitted: ', res);
     if (res && res.EC === 0) {
+      setIsFinished(true); // submit successfully then disable
       setDataModalResult(res.DT); // throw data result to modal
       setShowModalResult(true);
+
+      // console.log('DataQuiz: ', dataQuiz)
+      // console.log('answer correct : ', res.DT.quizData)
+
+      // update DataQuiz with Correct answers
+      if (res.DT && res.DT.quizData) {
+        let dataQuizClone = _.cloneDeep(dataQuiz);
+        let a = res.DT.quizData; // answer correct return form DB
+        for (let i = 0; i < dataQuizClone.length; i++) {
+          for (let j = 0; j < a.length; j++) {
+            if (+dataQuizClone[i].questionId === +a[j].questionId) {
+              // console.log('dataQuizClone[i]: ', dataQuizClone[i], 'a[j]: ', a[j])
+
+              let arrCorrectId = a[j].systemAnswers.map((answer) => answer.id)
+
+              for (let answerId of arrCorrectId) {
+                for (let answer of dataQuizClone[i].answers) {
+                  if (+answerId === +answer.id) {
+                    answer.isCorrect = true;
+                  }
+                }
+              }
+
+            }
+          }
+        }
+        // console.log('dataQuiz after check answer: ', dataQuizClone);
+        setDataQuiz(dataQuizClone);
+      }
     } else {
       alert('somethings wrong....')
     }
@@ -147,6 +186,10 @@ const DetailQuiz = () => {
         <div className="left-content">
           <div className="title">
             Quiz {quizId}: {location?.state?.quizTitle}
+            {isFinished &&
+              <div className='result'>Kết quả: {dataModalResult.countCorrect} / {dataModalResult.countTotal}</div>
+            }
+
           </div>
           <hr />
           {/* <div className="q-body">
@@ -157,21 +200,29 @@ const DetailQuiz = () => {
               handleCheckbox={handleCheckbox}
               currentQuestionIndex={index + 1}
               data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
+              isFinished={isFinished}
+              isShowAnswers={isShowAnswers}
             />
           </div>
           <div className='footer'>
-            <button className='btn btn-secondary'
-              onClick={() => handlePrev()}
-            >
-              Prev
-            </button>
-            <button className='btn btn-primary'
-              onClick={() => handleNext()}
-            >
-              Next
-            </button>
-            <button className='btn btn-warning'
+            {index > 0 &&
+              <button className='btn btn-secondary'
+                onClick={() => handlePrev()}
+              >
+                Prev
+              </button>
+            }
+            {index + 1 < dataQuiz.length &&
+              <button className='btn btn-primary'
+                onClick={() => handleNext()}
+              >
+                Next
+              </button>
+            }
+            <button
+              className='btn btn-warning'
               onClick={() => handleFinishQuiz()}
+              disabled={isFinished}
             >
               Finish
             </button>
@@ -189,6 +240,7 @@ const DetailQuiz = () => {
         show={showModalResult}
         setShow={setShowModalResult}
         dataModalResult={dataModalResult}
+        setIsShowAnswers={setIsShowAnswers}
       />
     </>
   )
