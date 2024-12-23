@@ -9,12 +9,11 @@ const PrivateRoute = (props) => {
 
   if (isAuthenticated && account.role !== 'ADMIN') {
     toast.error('You are not an administrator');
-    setTimeout(() => {
-      toast.error('Please log in again with administrator rights to continue.')
-    }, 600)
   }
 
-  return isAuthenticated && account.role === 'ADMIN' ? props.children : <Navigate to="/login" />
+  return isAuthenticated && account.role === 'ADMIN'
+    ? props.children
+    : <Navigate to="/login" state={{ requiredRole: 'ADMIN' }} replace />;
 }
 
 export default PrivateRoute;

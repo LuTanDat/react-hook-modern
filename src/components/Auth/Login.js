@@ -1,6 +1,6 @@
 import './Login.scss'
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { postLogin } from '../../services/apiServices';
 import { toast } from 'react-toastify';
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
@@ -10,6 +10,11 @@ import { ImSpinner9 } from "react-icons/im";
 import Language from '../Header/Language';
 
 const Login = () => {
+  const location = useLocation();
+  // Lấy thông tin state được truyền từ Navigate
+  const requiredRole = location?.state?.requiredRole || "";
+
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -72,9 +77,14 @@ const Login = () => {
       <div className="wellcome col-4 mx-auto">
         Hello, who’s this?
       </div>
+      {requiredRole === 'ADMIN' &&
+        <div className='alert alert-danger text-center col-4 mx-auto'>
+          <b>PLEASE LOGIN WITH AN ADMINSTRATOR ACCOUNT</b>
+        </div>
+      }
       <div className="content-form col-4 mx-auto">
         <div className="form-group">
-          <label>Email</label>
+          <label>Email (*)</label>
           <input
             type="email"
             className="form-control"
@@ -84,7 +94,7 @@ const Login = () => {
           </input>
         </div>
         <div className="form-group pass-group">
-          <label>Password</label>
+          <label>Password (*)</label>
           <input
             type={showPassword ? 'text' : 'password'}
             className="form-control"
