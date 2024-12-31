@@ -1,3 +1,7 @@
+// Cần sử dụng thêm:
+// normalizr: // đập/chia nhỏ state cho nó đơn giản hơn từ "nested obj" thành obj 1 lớp
+// use-immer: // cloneDeep performance better than
+
 import './ManageQuestion.scss'
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
@@ -18,9 +22,9 @@ const ManageQuestion = (props) => {
       description: '',
       imageFile: '',
       imageName: '',
-      isValidQuestion: false,
+      isInValidQuestion: false,
       answers: [
-        { id: uuidv4(), description: '', isCorrect: false, isValidAnswer: false },
+        { id: uuidv4(), description: '', isCorrect: false, isInValidAnswer: false },
       ]
     }
   ]
@@ -66,8 +70,7 @@ const ManageQuestion = (props) => {
       setQuestions([...questions, newQuestion])
     }
     if (type === 'REMOVE') {
-      let questionClone = _.cloneDeep(questions);
-      questionClone = questionClone.filter(item => item.id !== id);
+      let questionClone = questions.filter(item => item.id !== id);
       setQuestions(questionClone);
     }
   }
@@ -106,7 +109,6 @@ const ManageQuestion = (props) => {
       let index = questionClone.findIndex(item => item.id === questionId);
       if (index > -1) {
         questionClone[index].description = value;
-        questionClone[index].isValidQuestion = false;
         setQuestions(questionClone);
       }
     }
@@ -133,7 +135,6 @@ const ManageQuestion = (props) => {
             answer.isCorrect = value;
           if (type === 'INPUT') {
             answer.description = value;
-            answer.isValidAnswer = false;
           }
         }
         return answer;
@@ -158,15 +159,12 @@ const ManageQuestion = (props) => {
       return;
     }
 
-    let isValidAnswer = false;
-    let isValidQuestion = false;
     for (let i = 0; i < questions.length; i++) {
       if (!questions[i].description) {
         toast.error(`Question ${i + 1} is not empty.`);
-        isValidQuestion = true;
 
         let questionClone = _.cloneDeep(questions);
-        questionClone[i].isValidQuestion = isValidQuestion;
+        questionClone[i].isInValidQuestion = true;
         setQuestions(questionClone);
 
         return;
@@ -174,16 +172,13 @@ const ManageQuestion = (props) => {
       for (let j = 0; j < questions[i].answers.length; j++) {
         if (!questions[i].answers[j].description) {
           toast.error(`Question ${i + 1} - Answer ${j + 1} is not empty.`);
-          isValidAnswer = true;
 
           let questionClone = _.cloneDeep(questions);
-          questionClone[i].answers[j].isValidAnswer = isValidAnswer;
+          questionClone[i].answers[j].isInValidAnswer = true;
           setQuestions(questionClone);
-
-          break;
+          return;
         }
       }
-      if (isValidAnswer === true) return;
     }
 
 
@@ -243,7 +238,7 @@ const ManageQuestion = (props) => {
               <div className='question-content'>
                 <div className="form-floating description">
                   <input type="text"
-                    className={`form-control ${question.isValidQuestion ? 'is-invalid' : ''}`}
+                    className={`form-control ${question.isInValidQuestion ? 'is-invalid' : ''}`}
                     placeholder="Question's Description"
                     value={question.description}
                     onChange={(e) => handleOnChange('QUESTION', question.id, e.target.value)}
@@ -292,7 +287,7 @@ const ManageQuestion = (props) => {
                     />
                     <div className="form-floating answer-name">
                       <input type="text"
-                        className={`form-control ${answer.isValidAnswer ? 'is-invalid' : ''}`}
+                        className={`form-control ${answer.isInValidAnswer ? 'is-invalid' : ''}`}
                         placeholder="Answer 1"
                         value={answer.description}
                         onChange={(e) => handleAnswerQuestion('INPUT', answer.id, question.id, e.target.value)}
