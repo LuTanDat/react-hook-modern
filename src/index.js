@@ -1,39 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import { store, persistor } from './redux/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
-import User from './components/User/User';
-import Admin from './components/Admin/Admin';
-import Home from './components/Home/Home';
-import Dashboard from './components/Admin/Content/Dashboard';
-import ManageUsers from './components/Admin/Content/ManageUsers';
+import 'nprogress/nprogress.css';
+import { PersistGate } from 'redux-persist/integration/react'; // dam bao load xong data tu localstorage len roi moi chay react
+import { BrowserRouter } from "react-router-dom";
+import Layout from './Layout';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    {/* <React.StrictMode> */}
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}> {/*Nested Routes */}
-          <Route index element={<Home />} />
-          <Route path="users" element={<User />} />
-        </Route>
-
-        <Route path="/admin" element={<Admin />} >
-          <Route index element={<Dashboard />} />
-          <Route path="manage-users" element={<ManageUsers />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-    {/* </React.StrictMode> */}
+    <PersistGate loading={null} persistor={persistor}> {/*cho Redux nap data xong moi chay react */}
+      {/* <React.StrictMode> */}
+      <BrowserRouter>
+        <Layout />
+      </BrowserRouter>
+      {/* </React.StrictMode> */}
+    </PersistGate>
   </Provider>
 );
 

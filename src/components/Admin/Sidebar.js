@@ -12,10 +12,13 @@ import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } fro
 import { DiReact } from "react-icons/di";
 import { MdDashboard } from "react-icons/md";
 import sidebarBg from '../../assets/bg2.jpg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Sidebar = (props) => {
   const { image, collapsed, toggled, handleToggleSidebar } = props;
+
+  const navigate = useNavigate();
+
   return (
     <>
       <ProSidebar
@@ -39,7 +42,7 @@ const Sidebar = (props) => {
             }}
           >
             <DiReact size={'3em'} color={'00bfff'} />
-            <span>PRO SIDEBAR</span>
+            <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>PRO SIDEBAR <Link to="/" /></span>
           </div>
         </SidebarHeader>
 
