@@ -1,4 +1,27 @@
-#Node.js v14.17.0
+## Node.js v14.17.0
+
+&nbsp;
+&nbsp;
+
+## 3. React Ultimate
+
+&nbsp;
+&nbsp;
+
+## What's next?
+
+- performance:
+
+  - useCallback / useMemo
+  - upgrade to React Hook Form or React Formik
+
+- learn more about backend
+  .
+  .
+
+  &nbsp;
+  &nbsp;
+  &nbsp;
 
 # Getting Started with Create React App
 
