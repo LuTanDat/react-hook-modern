@@ -1,19 +1,19 @@
 import axios from '../utils/axiosCustomize'; // sau nay de thay doi path, cau hinh request, response
 
 const postLogin = (email, password) => {
-  return axios.post(`api/v1/login`, { email, password, delay: 5000 })
+  return axios.post(`v1/api/login`, { email, password, delay: 5000 })
 }
 
 const postRegister = (email, username, password) => {
-  return axios.post(`api/v1/register`, { email, username, password })
+  return axios.post(`v1/api/register`, { email, username, password })
 }
 
 const postLogout = (email, refresh_token) => {
-  return axios.post('/api/v1/logout', { email, refresh_token })
+  return axios.post('/v1/api/logout', { email, refresh_token })
 }
 
 const getQuizByUser = () => {
-  return axios.get('api/v1/quiz-by-participant')
+  return axios.get('v1/api/quiz-by-participant')
 }
 
 const postAddNewUsers = (email, password, username, role, image) => {
@@ -25,7 +25,7 @@ const postAddNewUsers = (email, password, username, role, image) => {
   data.append('role', role);
   data.append('userImage', image);
 
-  return axios.post('api/v1/participant', data)
+  return axios.post('v1/api/participant', data)
 }
 
 export {
