@@ -15,7 +15,7 @@ const ListQuiz = (props) => {
 
   const getAllUser = async () => {
     let res = await getAllUsers();
-    if (res?.EC !== 0) {
+    if (res?.EC !== 0 || res?.EC !== 4) {
       toast.error(res?.EM);
       setTimeout(() => {
         navigate('/login');
