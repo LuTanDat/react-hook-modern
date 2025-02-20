@@ -1,6 +1,15 @@
+/**
+ * component -> axios config -> request -> ...... -> axios config -> response
+ * tuong tu nhu middleware
+ */
+
+
+//------------------------------------------------------------------------------
+
 import axios from "axios";
 import NProgress from 'nprogress' // loading bars
 import { store } from '../redux/store' // get state redux outside component
+
 
 NProgress.configure({
   showSpinner: false,
@@ -14,7 +23,6 @@ NProgress.configure({
   trickleSpeed: 100,
 })
 
-
 const instance = axios.create({
   baseURL: "http://localhost:8081/", // URL backend
   withCredentials: true, // QUAN TRỌNG: Gửi cookie refreshToken khi gọi API
@@ -23,20 +31,13 @@ const instance = axios.create({
 });
 
 
-//------------------------------------------------------------------------------
-
-/**
- * component -> axios config -> request -> ...... -> axios config -> response
- * tuong tu nhu middleware
- */
-
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
   // Do something before request is sent
+  NProgress.start();
+
   const access_token = store?.getState()?.user?.account?.access_token;
   config.headers["Authorization"] = `Bearer ${access_token}`;
-
-  NProgress.start();
 
   return config;
 }, function (error) {
