@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { getAllUsers, getQuizByUser } from "../../services/apiServices";
-import './ListQuiz.scss'
+import { getAllUsers } from "../../services/apiServices";
+// import './ListQuiz.scss'
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const ListQuiz = (props) => {
   const navigate = useNavigate();
-  const [arrQuiz, setArrQuiz] = useState([]);
+  // const [arrQuiz, setArrQuiz] = useState([]);
 
   useEffect(() => {
-    getQuizData();
+    // getQuizData();
     getAllUser();
   }, [])
 
@@ -23,17 +23,17 @@ const ListQuiz = (props) => {
     }
   }
 
-  const getQuizData = async () => {
-    let res = await getQuizByUser();
-    // console.log(res);
-    if (res && res.EC === 0) {
-      setArrQuiz(res.DT);
-    }
-  }
+  // const getQuizData = async () => {
+  //   let res = await getQuizByUser();
+  //   // console.log(res);
+  //   if (res && res.EC === 0) {
+  //     setArrQuiz(res.DT);
+  //   }
+  // }
 
   return (
     <div className="list-quiz-container container">
-      {arrQuiz && arrQuiz.length > 0 && arrQuiz.map((quiz, index) => {
+      {/* {arrQuiz && arrQuiz.length > 0 && arrQuiz.map((quiz, index) => {
         return (
           <div key={`Quiz ${index}`} className="card" style={{ width: '18rem' }}>
             <img src={`data:image/jpeg;base64, ${quiz.image}`} className="card-img-top" alt="..." />
@@ -48,7 +48,7 @@ const ListQuiz = (props) => {
       })}
       {arrQuiz && arrQuiz.length === 0 &&
         <div>You don't have any quiz now...</div>
-      }
+      } */}
     </div>
   )
 }

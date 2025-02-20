@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import imagePreview from '../../../assets/bg2.jpg';
 import { FcPlus } from "react-icons/fc";
 import { toast } from 'react-toastify';
-import { postAddNewUsers } from '../../../services/apiServices';
+// import { postAddNewUsers } from '../../../services/apiServices';
 
 const ModalCreateUser = (props) => {
   const { show, setShow } = props;
@@ -45,26 +45,26 @@ const ModalCreateUser = (props) => {
 
   const handleSubmitCreateNewUser = async () => {
 
-    const isValidEmail = validateEmail(email)
-    if (!isValidEmail) {
-      toast.error('invalid email')
-      return;
-    }
-    if (!password) {
-      toast.error('invalid password')
-      return;
-    }
+    // const isValidEmail = validateEmail(email)
+    // if (!isValidEmail) {
+    //   toast.error('invalid email')
+    //   return;
+    // }
+    // if (!password) {
+    //   toast.error('invalid password')
+    //   return;
+    // }
 
 
-    let data = await postAddNewUsers(email, password, username, role, image);
-    console.log('>>> check res component: ', data);
-    if (data && data.EC === 0) {
-      toast.success(data.EM)
-      handleClose()
-    }
-    if (data && data.EC !== 0) {
-      toast.error(data.EM)
-    }
+    // let data = await postAddNewUsers(email, password, username, role, image);
+    // console.log('>>> check res component: ', data);
+    // if (data && data.EC === 0) {
+    //   toast.success(data.EM)
+    //   handleClose()
+    // }
+    // if (data && data.EC !== 0) {
+    //   toast.error(data.EM)
+    // }
   }
 
   return (
