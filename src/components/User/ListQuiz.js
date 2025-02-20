@@ -1,13 +1,27 @@
 import { useEffect, useState } from "react";
-import { getQuizByUser } from "../../services/apiServices";
+import { getAllUsers, getQuizByUser } from "../../services/apiServices";
 import './ListQuiz.scss'
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ListQuiz = (props) => {
+  const navigate = useNavigate();
   const [arrQuiz, setArrQuiz] = useState([]);
 
   useEffect(() => {
     getQuizData();
+    getAllUser();
   }, [])
+
+  const getAllUser = async () => {
+    let res = await getAllUsers();
+    if (res?.EC !== 0) {
+      toast.error(res?.EM);
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
+    }
+  }
 
   const getQuizData = async () => {
     let res = await getQuizByUser();

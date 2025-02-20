@@ -8,8 +8,12 @@ const postRegister = (email, username, password) => {
   return axios.post(`v1/api/register`, { email, username, password })
 }
 
-const postLogout = (email, refresh_token) => {
-  return axios.post('/v1/api/logout', { email, refresh_token })
+const postLogout = () => {
+  return axios.post('/v1/api/logout')
+}
+
+const getAllUsers = () => {
+  return axios.get(`v1/api/get-all-users`);
 }
 
 const getQuizByUser = () => {
@@ -30,6 +34,7 @@ const postAddNewUsers = (email, password, username, role, image) => {
 
 export {
   postLogin, postRegister, postLogout,
+  getAllUsers,
   getQuizByUser,
   postAddNewUsers,
 
