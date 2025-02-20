@@ -16,7 +16,8 @@ NProgress.configure({
 
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8081/',
+  baseURL: "http://localhost:8081/", // URL backend
+  withCredentials: true, // QUAN TRỌNG: Bật gửi cookie cho backend
   // timeout: 1000, // thoi gian cho server phan hoi ket qua 1000ms
   // headers: {'X-Custom-Header': 'foobar'} // token
 });
