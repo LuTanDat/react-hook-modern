@@ -29,12 +29,13 @@ const Header = () => {
   }
 
   const handleLogout = async () => {
-    let res = await postLogout()
+    let res = await postLogout(account.email)
     if (res && (res.EC === 0 || res.EC === 1)) {
       dispatch(doLogout());
       toast.success(res.EM);
       navigate('/login');
-    } else {
+    }
+    else {
       toast.error(res.EM)
     }
   }

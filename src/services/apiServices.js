@@ -8,8 +8,8 @@ const postRegister = (email, username, password) => {
   return axios.post(`v1/api/register`, { email, username, password })
 }
 
-const postLogout = () => {
-  return axios.post('/v1/api/logout')
+const postLogout = (email) => {
+  return axios.post('/v1/api/logout', email)
 }
 
 const getAllUsers = () => {

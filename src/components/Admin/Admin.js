@@ -20,14 +20,17 @@ const Admin = (props) => {
   const account = useSelector(state => state.user.account);
 
   const handleLogout = async () => {
-    let res = await postLogout(account.email, account.refresh_token)
-    if (res && res.EC === 0) {
+    let res = await postLogout(account.email)
+    if (res && (res.EC === 0 || res.EC === 1)) {
       dispatch(doLogout());
+      toast.success(res.EM);
       navigate('/login');
-    } else {
+    }
+    else {
       toast.error(res.EM)
     }
   }
+
   return (
     <div className="admin-container">
       <div className="admin-sidebar">
