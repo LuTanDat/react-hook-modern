@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const ListQuiz = (props) => {
   const navigate = useNavigate();
   // const [arrQuiz, setArrQuiz] = useState([]);
+  const [Users, setUsers] = useState([]);
 
   useEffect(() => {
     // getQuizData();
@@ -20,6 +21,8 @@ const ListQuiz = (props) => {
       setTimeout(() => {
         navigate('/login');
       }, 3000);
+    } else if (res && res.EC === 0) {
+      setUsers(res.DT);
     }
   }
 
