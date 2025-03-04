@@ -1,8 +1,7 @@
 
 import {
-  FETCH_USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS,
-  USER_REFRESH_TOKEN_SUCCESS,
-
+  FETCH_USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS, USER_REFRESH_TOKEN_SUCCESS,
+  FETCH_USERS_PENDING, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR
 } from '../action/userAction';
 
 const INITIAL_STATE = {
@@ -14,6 +13,9 @@ const INITIAL_STATE = {
     image: ''
   },
   isAuthenticated: false,
+  listUsers: [],
+  isLoading: false,
+  error: null,
 };
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -51,6 +53,29 @@ const userReducer = (state = INITIAL_STATE, action) => {
           access_token: action?.payload
         },
         isAuthenticated: true,
+      };
+
+
+    // Xử lý danh sách người dùng
+    case FETCH_USERS_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+
+    case FETCH_USERS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        listUsers: action.payload,
+      };
+
+    case FETCH_USERS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
       };
 
     default: return state;

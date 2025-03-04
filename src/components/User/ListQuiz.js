@@ -1,57 +1,39 @@
-import { useEffect, useState } from "react";
-import { getAllUsers } from "../../services/apiServices";
-// import './ListQuiz.scss'
+import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers } from "../../redux/action/userAction";
 
 const ListQuiz = (props) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const [arrQuiz, setArrQuiz] = useState([]);
-  const [Users, setUsers] = useState([]);
+
+  const { listUsers, isLoading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
-    // getQuizData();
-    getAllUser();
-  }, [])
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
-  const getAllUser = async () => {
-    let res = await getAllUsers();
-    if (res?.EC !== 0 && res?.EC !== 4) {
-      toast.error(res?.EM);
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
       setTimeout(() => {
         navigate('/login');
       }, 3000);
-    } else if (res && res.EC === 0) {
-      setUsers(res.DT);
     }
-  }
-
-  // const getQuizData = async () => {
-  //   let res = await getQuizByUser();
-  //   // console.log(res);
-  //   if (res && res.EC === 0) {
-  //     setArrQuiz(res.DT);
-  //   }
-  // }
+  }, [error, navigate]);
 
   return (
     <div className="list-quiz-container container">
-      {/* {arrQuiz && arrQuiz.length > 0 && arrQuiz.map((quiz, index) => {
-        return (
-          <div key={`Quiz ${index}`} className="card" style={{ width: '18rem' }}>
-            <img src={`data:image/jpeg;base64, ${quiz.image}`} className="card-img-top" alt="..." />
-
-            <div className="card-body">
-              <h5 className="card-title">Quiz {index + 1}</h5>
-              <p className="card-text">{quiz.description}</p>
-              <button className="btn btn-primary">Start Now</button>
-            </div>
-          </div>
-        )
-      })}
-      {arrQuiz && arrQuiz.length === 0 &&
-        <div>You don't have any quiz now...</div>
-      } */}
+      {isLoading && <p>Loading users...</p>}
+      {!isLoading && listUsers?.length === 0 && <p>No users found.</p>}
+      {!isLoading && listUsers?.length > 0 && (
+        <ul>
+          {listUsers?.map((user, index) => (
+            <li key={index}>{user.username} - {user.email}</li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
