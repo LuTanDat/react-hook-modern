@@ -87,7 +87,7 @@ export const logoutUser = (email, navigate) => {
   };
 };
 
-export const fetchUsers = () => {
+export const fetchUsers = (navigate) => {
   return async (dispatch) => {
     dispatch({ type: FETCH_USERS_PENDING });
 
@@ -103,12 +103,16 @@ export const fetchUsers = () => {
           type: FETCH_USERS_ERROR,
           payload: res?.EM || "Error fetching users",
         });
+        toast.error(res?.EM || "Error fetching users");
+        navigate('/login');
       }
     } catch (error) {
       dispatch({
         type: FETCH_USERS_ERROR,
         payload: error.message || "Error fetching users",
       });
+      toast.error(error.message || "Error fetching users");
+      navigate('/login');
     }
   };
 };

@@ -8,21 +8,12 @@ const ListQuiz = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { listUsers, isLoading, error } = useSelector((state) => state.user);
+  const { listUsers, isLoading } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (listUsers.length === 0)
-      dispatch(fetchUsers());
+      dispatch(fetchUsers(navigate));
   }, [dispatch]);
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000);
-    }
-  }, [error, navigate]);
 
   return (
     <div className="list-quiz-container container">
