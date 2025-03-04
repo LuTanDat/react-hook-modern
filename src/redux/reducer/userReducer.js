@@ -1,7 +1,8 @@
 
 import {
-  FETCH_USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS, USER_REFRESH_TOKEN_SUCCESS,
-  FETCH_USERS_PENDING, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR
+  USER_LOGOUT_SUCCESS, USER_REFRESH_TOKEN_SUCCESS,
+  FETCH_USERS_PENDING, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR,
+  LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_ERROR
 } from '../action/userAction';
 
 const INITIAL_STATE = {
@@ -19,9 +20,17 @@ const INITIAL_STATE = {
 };
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FETCH_USER_LOGIN_SUCCESS:
+    case LOGIN_PENDING:
       return {
         ...state,
+        isLoading: true,
+        error: null,
+      };
+
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
         account: {
           access_token: action?.payload?.DT.access_token,
           email: action?.payload?.DT.email,
@@ -30,6 +39,13 @@ const userReducer = (state = INITIAL_STATE, action) => {
           image: action?.payload?.DT.image,
         },
         isAuthenticated: true,
+      };
+
+    case LOGIN_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
       };
 
     case USER_LOGOUT_SUCCESS:

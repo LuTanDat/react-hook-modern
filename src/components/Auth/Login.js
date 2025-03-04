@@ -1,22 +1,35 @@
 import './Login.scss'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postLogin } from '../../services/apiServices';
 import { toast } from 'react-toastify';
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import { useDispatch } from 'react-redux';
-import { doLogin } from '../../redux/action/userAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../redux/action/userAction';
 import { ImSpinner9 } from "react-icons/im";
 import Language from '../Header/Language';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const { isLoading, error, isAuthenticated } = useSelector(state => state.user);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.success("Login successful!");
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
 
   const validateEmail = (email) => {
@@ -39,20 +52,8 @@ const Login = () => {
       return;
     }
 
-    setIsLoading(true)
-
     // submit apis
-    const data = await postLogin(email, password);
-    if (data && data.EC === 0) {
-      dispatch(doLogin(data));
-      toast.success(data.EM)
-      setIsLoading(false)
-      navigate('/')
-    }
-    if (data && data.EC !== 0) {
-      toast.error(data.EM)
-      setIsLoading(false)
-    }
+    dispatch(loginUser(email, password));
   }
 
   const handleKeyDown = (e) => {

@@ -5,23 +5,20 @@
  * EC: 4 -> "Access Token đã hết hạn"                     -> refresh token
  */
 
-
+import { postLogin } from "../../services/apiServices";
 import { getAllUsers } from '../../services/apiServices';
 
 export const FETCH_USER_LOGIN_SUCCESS = 'FETCH_USER_LOGIN_SUCCESS'
 export const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS'
 export const USER_REFRESH_TOKEN_SUCCESS = 'USER_REFRESH_TOKEN_SUCCESS'
 
+export const LOGIN_PENDING = "LOGIN_PENDING";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_ERROR = "LOGIN_ERROR";
+
 export const FETCH_USERS_PENDING = 'FETCH_USERS_PENDING';
 export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 export const FETCH_USERS_ERROR = 'FETCH_USERS_ERROR';
-
-export const doLogin = (data) => {
-  return {
-    type: FETCH_USER_LOGIN_SUCCESS,
-    payload: data,
-  };
-}
 
 export const doLogout = () => {
   return {
@@ -34,6 +31,34 @@ export const refreshToken = (access_token) => {
     type: USER_REFRESH_TOKEN_SUCCESS,
     payload: access_token,
   }
+};
+
+
+export const loginUser = (email, password) => {
+  return async (dispatch) => {
+    dispatch({ type: LOGIN_PENDING });
+
+    try {
+      const res = await postLogin(email, password);
+
+      if (res?.EC === 0) {
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: res,
+        });
+      } else {
+        dispatch({
+          type: LOGIN_ERROR,
+          payload: res?.EM || "Login failed",
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: LOGIN_ERROR,
+        payload: error.message || "Login error",
+      });
+    }
+  };
 };
 
 export const fetchUsers = () => {
