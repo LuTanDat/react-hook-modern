@@ -12,24 +12,11 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isLoading, error, isAuthenticated } = useSelector(state => state.user);
+  const { isLoading } = useSelector(state => state.user);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      toast.success("Login successful!");
-      navigate('/');
-    }
-  }, [isAuthenticated, navigate]);
 
 
   const validateEmail = (email) => {
@@ -53,7 +40,7 @@ const Login = () => {
     }
 
     // submit apis
-    dispatch(loginUser(email, password));
+    dispatch(loginUser(email, password, navigate));
   }
 
   const handleKeyDown = (e) => {

@@ -32,7 +32,7 @@ export const refreshToken = (access_token) => {
   }
 };
 
-export const loginUser = (email, password) => {
+export const loginUser = (email, password, navigate) => {
   return async (dispatch) => {
     dispatch({ type: LOGIN_PENDING });
 
@@ -44,17 +44,21 @@ export const loginUser = (email, password) => {
           type: LOGIN_SUCCESS,
           payload: res,
         });
+        toast.success("Login successful!");
+        navigate('/');
       } else {
         dispatch({
           type: LOGIN_ERROR,
           payload: res?.EM || "Login failed",
         });
+        toast.error(res?.EM || "Login failed");
       }
     } catch (error) {
       dispatch({
         type: LOGIN_ERROR,
         payload: error.message || "Login error",
       });
+      toast.error(error.message || "Login error");
     }
   };
 };
