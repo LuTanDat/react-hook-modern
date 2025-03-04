@@ -5,8 +5,7 @@
  * EC: 4 -> "Access Token đã hết hạn"                     -> refresh token
  */
 
-import { postLogin } from "../../services/apiServices";
-import { getAllUsers } from '../../services/apiServices';
+import { postLogin, getAllUsers } from "../../services/apiServices";
 
 export const FETCH_USER_LOGIN_SUCCESS = 'FETCH_USER_LOGIN_SUCCESS'
 export const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS'
