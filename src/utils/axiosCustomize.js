@@ -9,7 +9,7 @@
 import axios from "axios";
 import NProgress from 'nprogress' // loading bars
 import { store } from '../redux/store' // get state redux outside component
-import { doLogout, refreshToken } from '../redux/action/userAction';
+import { logoutUser, refreshToken } from '../redux/action/userAction';
 
 
 NProgress.configure({
@@ -44,7 +44,7 @@ const refreshAccessToken = async () => {
     }
   } catch (error) {
     console.error("Lỗi khi refresh token:", error);
-    store.dispatch(doLogout()); // Nếu refresh thất bại, đăng xuất người dùng
+    store.dispatch(logoutUser(email)); // Nếu refresh thất bại, đăng xuất người dùng
   }
   return null;
 };

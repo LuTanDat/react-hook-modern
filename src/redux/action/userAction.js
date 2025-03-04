@@ -5,7 +5,7 @@
  * EC: 4 -> "Access Token đã hết hạn"                     -> refresh token
  */
 
-import { postLogin, getAllUsers } from "../../services/apiServices";
+import { postLogin, postLogout, getAllUsers } from "../../services/apiServices";
 
 export const FETCH_USER_LOGIN_SUCCESS = 'FETCH_USER_LOGIN_SUCCESS'
 export const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS'
@@ -15,15 +15,14 @@ export const LOGIN_PENDING = "LOGIN_PENDING";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 
+export const LOGOUT_PENDING = "LOGOUT_PENDING";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_ERROR = "LOGOUT_ERROR";
+
 export const FETCH_USERS_PENDING = 'FETCH_USERS_PENDING';
 export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 export const FETCH_USERS_ERROR = 'FETCH_USERS_ERROR';
 
-export const doLogout = () => {
-  return {
-    type: USER_LOGOUT_SUCCESS
-  }
-};
 
 export const refreshToken = (access_token) => {
   return {
@@ -31,7 +30,6 @@ export const refreshToken = (access_token) => {
     payload: access_token,
   }
 };
-
 
 export const loginUser = (email, password) => {
   return async (dispatch) => {
@@ -55,6 +53,29 @@ export const loginUser = (email, password) => {
       dispatch({
         type: LOGIN_ERROR,
         payload: error.message || "Login error",
+      });
+    }
+  };
+};
+
+export const logoutUser = (email) => {
+  return async (dispatch) => {
+    dispatch({ type: LOGOUT_PENDING });
+
+    try {
+      let res = await postLogout(email);
+      if (res?.EC === 0 || res?.EC === 1) {
+        dispatch({ type: LOGOUT_SUCCESS });
+      } else {
+        dispatch({
+          type: LOGOUT_ERROR,
+          payload: res?.EM || "Logout failed",
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: LOGOUT_ERROR,
+        payload: error.message || "Logout error",
       });
     }
   };

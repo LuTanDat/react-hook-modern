@@ -2,7 +2,8 @@
 import {
   USER_LOGOUT_SUCCESS, USER_REFRESH_TOKEN_SUCCESS,
   FETCH_USERS_PENDING, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR,
-  LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_ERROR
+  LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_ERROR,
+  LOGOUT_PENDING, LOGOUT_SUCCESS, LOGOUT_ERROR
 } from '../action/userAction';
 
 const INITIAL_STATE = {
@@ -17,6 +18,7 @@ const INITIAL_STATE = {
   listUsers: [],
   isLoading: false,
   error: null,
+  isLogouted: false,
 };
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -39,6 +41,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
           image: action?.payload?.DT.image,
         },
         isAuthenticated: true,
+        isLogouted: false, // ✅ Khi login thành công, reset trạng thái isLogouted
       };
 
     case LOGIN_ERROR:
@@ -48,7 +51,35 @@ const userReducer = (state = INITIAL_STATE, action) => {
         error: action.payload,
       };
 
-    case USER_LOGOUT_SUCCESS:
+    case LOGOUT_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        account: {
+          access_token: '',
+          email: '',
+          username: '',
+          role: '',
+          image: ''
+        },
+        isAuthenticated: false,
+        listUsers: [],
+        isLogouted: true,
+      };
+
+    case LOGOUT_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
       return {
         ...state,
         account: {
@@ -70,7 +101,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
         },
         isAuthenticated: true,
       };
-
 
     // Xử lý danh sách người dùng
     case FETCH_USERS_PENDING:

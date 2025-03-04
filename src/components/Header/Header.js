@@ -4,11 +4,10 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { postLogout } from '../../services/apiServices';
 import { toast } from 'react-toastify';
-import { doLogout } from '../../redux/action/userAction';
+import { logoutUser } from '../../redux/action/userAction';
 import Language from './Language';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Profile from './Profile';
 
 const Header = () => {
@@ -17,8 +16,20 @@ const Header = () => {
 
   const [show, setShow] = useState(false);
 
-  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
-  const account = useSelector(state => state.user.account);
+  const { isAuthenticated, account, isLoading, error, isLogouted } = useSelector(state => state.user)
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isLogouted) {
+      toast.success("Logout successful!");
+      navigate('/login');
+    }
+  }, [isLogouted, navigate]);
 
   const handleLogin = () => {
     navigate('/login');
@@ -29,15 +40,7 @@ const Header = () => {
   }
 
   const handleLogout = async () => {
-    let res = await postLogout(account.email)
-    if (res && (res.EC === 0 || res.EC === 1)) {
-      dispatch(doLogout());
-      toast.success(res.EM);
-      navigate('/login');
-    }
-    else {
-      toast.error(res.EM)
-    }
+    dispatch(logoutUser(account.email));
   }
 
   return (

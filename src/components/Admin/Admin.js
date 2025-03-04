@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Admin.scss'
 import Sidebar from "./Sidebar";
 import { FaBars } from 'react-icons/fa';
@@ -6,9 +6,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 // import PerfectScrollbar from 'react-perfect-scrollbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Language from '../Header/Language';
-import { postLogout } from '../../services/apiServices';
 import { useDispatch, useSelector } from 'react-redux';
-import { doLogout } from '../../redux/action/userAction';
+import { logoutUser } from '../../redux/action/userAction';
 import { toast } from 'react-toastify';
 
 
@@ -17,18 +16,23 @@ const Admin = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const account = useSelector(state => state.user.account);
+  const { isAuthenticated, account, isLoading, error, isLogouted } = useSelector(state => state.user)
 
-  const handleLogout = async () => {
-    let res = await postLogout(account.email)
-    if (res && (res.EC === 0 || res.EC === 1)) {
-      dispatch(doLogout());
-      toast.success(res.EM);
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isLogouted) {
+      toast.success("Logout successful!");
       navigate('/login');
     }
-    else {
-      toast.error(res.EM)
-    }
+  }, [isLogouted, navigate]);
+
+  const handleLogout = async () => {
+    dispatch(logoutUser(account.email));
   }
 
   return (
