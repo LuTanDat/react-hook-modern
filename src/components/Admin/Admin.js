@@ -16,23 +16,10 @@ const Admin = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isAuthenticated, account, isLoading, error, isLogouted } = useSelector(state => state.user)
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (isLogouted) {
-      toast.success("Logout successful!");
-      navigate('/login');
-    }
-  }, [isLogouted, navigate]);
+  const { account } = useSelector(state => state.user)
 
   const handleLogout = async () => {
-    dispatch(logoutUser(account.email));
+    dispatch(logoutUser(account.email, navigate));
   }
 
   return (

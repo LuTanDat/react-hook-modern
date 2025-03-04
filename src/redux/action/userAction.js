@@ -5,6 +5,7 @@
  * EC: 4 -> "Access Token đã hết hạn"                     -> refresh token
  */
 
+import { toast } from 'react-toastify';
 import { postLogin, postLogout, getAllUsers } from "../../services/apiServices";
 
 export const FETCH_USER_LOGIN_SUCCESS = 'FETCH_USER_LOGIN_SUCCESS'
@@ -58,7 +59,7 @@ export const loginUser = (email, password) => {
   };
 };
 
-export const logoutUser = (email) => {
+export const logoutUser = (email, navigate) => {
   return async (dispatch) => {
     dispatch({ type: LOGOUT_PENDING });
 
@@ -66,17 +67,22 @@ export const logoutUser = (email) => {
       let res = await postLogout(email);
       if (res?.EC === 0 || res?.EC === 1) {
         dispatch({ type: LOGOUT_SUCCESS });
+
+        toast.success("Logout successful!");
+        navigate('/login');
       } else {
         dispatch({
           type: LOGOUT_ERROR,
           payload: res?.EM || "Logout failed",
         });
+        toast.error(res?.EM || "Logout failed");
       }
     } catch (error) {
       dispatch({
         type: LOGOUT_ERROR,
         payload: error.message || "Logout error",
       });
+      toast.error(error.message || "Logout error");
     }
   };
 };

@@ -16,20 +16,7 @@ const Header = () => {
 
   const [show, setShow] = useState(false);
 
-  const { isAuthenticated, account, isLoading, error, isLogouted } = useSelector(state => state.user)
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (isLogouted) {
-      toast.success("Logout successful!");
-      navigate('/login');
-    }
-  }, [isLogouted, navigate]);
+  const { isAuthenticated, account } = useSelector(state => state.user)
 
   const handleLogin = () => {
     navigate('/login');
@@ -40,7 +27,7 @@ const Header = () => {
   }
 
   const handleLogout = async () => {
-    dispatch(logoutUser(account.email));
+    dispatch(logoutUser(account.email, navigate));
   }
 
   return (

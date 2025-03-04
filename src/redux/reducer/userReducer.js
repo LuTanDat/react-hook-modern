@@ -18,7 +18,6 @@ const INITIAL_STATE = {
   listUsers: [],
   isLoading: false,
   error: null,
-  isLogouted: false,
 };
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -41,7 +40,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
           image: action?.payload?.DT.image,
         },
         isAuthenticated: true,
-        isLogouted: false, // ✅ Khi login thành công, reset trạng thái isLogouted
       };
 
     case LOGIN_ERROR:
@@ -61,7 +59,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
     case LOGOUT_SUCCESS:
       return {
         ...state,
-        isLoading: false,
         account: {
           access_token: '',
           email: '',
@@ -71,7 +68,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
         },
         isAuthenticated: false,
         listUsers: [],
-        isLogouted: true,
+        isLoading: false,
+        error: null,
       };
 
     case LOGOUT_ERROR:
@@ -79,17 +77,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: false,
         error: action.payload,
-      };
-      return {
-        ...state,
-        account: {
-          access_token: '',
-          email: '',
-          username: '',
-          role: '',
-          image: ''
-        },
-        isAuthenticated: false,
       };
 
     case USER_REFRESH_TOKEN_SUCCESS:
