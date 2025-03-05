@@ -11,8 +11,8 @@ const ListQuiz = (props) => {
   const { listUsers, isLoading } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (listUsers.length === 0)
-      dispatch(fetchUsers(navigate));
+    // if (listUsers.length === 0)
+    dispatch(fetchUsers(navigate));
   }, [dispatch]);
 
   return (
