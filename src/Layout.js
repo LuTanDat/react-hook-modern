@@ -33,7 +33,11 @@ const Layout = () => {
           <Route path="users" element={<PrivateRoute><ListQuiz /></PrivateRoute>} />
         </Route>
 
-        <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} >
+        <Route path="/admin" element={
+          <PrivateRoute requiredRole="admin">
+            <Admin />
+          </PrivateRoute>
+        } >
           <Route index element={<Dashboard />} />
           <Route path="manage-users" element={<ManageUsers />} />
         </Route>
