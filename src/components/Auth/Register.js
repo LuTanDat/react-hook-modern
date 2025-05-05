@@ -21,18 +21,31 @@ const Register = () => {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
-
-  const handleRegister = async () => {
-    // validate
+  const isValidInputs = () => {
+    if (!email) {
+      toast.error('email is required')
+      return false;
+    }
     const isValidEmail = validateEmail(email)
     if (!isValidEmail) {
       toast.error('invalid email')
-      return;
+      return false;
     }
     if (!password) {
-      toast.error('invalid password')
-      return;
+      toast.error('password is required')
+      return false;
     }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return false;
+    }
+
+    return true;
+  }
+
+  const handleRegister = async () => {
+    // validate
+    if (!isValidInputs()) return;
 
     // submit apis
     const data = await postRegister(email, username, password);
