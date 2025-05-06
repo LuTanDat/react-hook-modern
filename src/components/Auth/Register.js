@@ -66,11 +66,11 @@ const Register = () => {
 
     // submit apis
     const data = await postRegister(email, username, password);
-    if (data && data.EC === 0) {
+    if (data && +data.EC === 0) {
       toast.success(data.EM)
       navigate('/login')
     }
-    if (data && data.EC !== 0) {
+    if (data && +data.EC !== 0) {
       toast.error(data.EM)
     }
   }
