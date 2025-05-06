@@ -13,6 +13,12 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const defaultValidInput = {
+    isValidEmail: true,
+    isValidPassword: true,
+    isValidUsername: true,
+  }
+  const [objCheckInput, setObjCheckInput] = useState(defaultValidInput)
 
   const validateEmail = (email) => {
     return String(email)
@@ -22,21 +28,32 @@ const Register = () => {
       );
   };
   const isValidInputs = () => {
+    setObjCheckInput(defaultValidInput);
+
     if (!email) {
-      toast.error('email is required')
+      toast.error('Email is required')
+      setObjCheckInput({ ...defaultValidInput, isValidEmail: false })
       return false;
     }
     const isValidEmail = validateEmail(email)
     if (!isValidEmail) {
-      toast.error('invalid email')
+      toast.error('Invalid email')
+      setObjCheckInput({ ...defaultValidInput, isValidEmail: false })
       return false;
     }
     if (!password) {
-      toast.error('password is required')
+      toast.error('Password is required')
+      setObjCheckInput({ ...defaultValidInput, isValidPassword: false })
       return false;
     }
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters");
+      setObjCheckInput({ ...defaultValidInput, isValidPassword: false })
+      return false;
+    }
+    if (!username) {
+      toast.error('Username is required')
+      setObjCheckInput({ ...defaultValidInput, isValidUsername: false })
       return false;
     }
 
@@ -77,7 +94,7 @@ const Register = () => {
           <label>Email (*)</label>
           <input
             type="email"
-            className="form-control"
+            className={`form-control ${objCheckInput.isValidEmail ? '' : 'is-invalid'}`}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -88,7 +105,8 @@ const Register = () => {
           <label>Password (*)</label>
           <input
             type={showPassword ? 'text' : 'password'}
-            className="form-control"
+            className={`form-control ${objCheckInput.isValidPassword ? '' : 'is-invalid'}`}
+            placeholder='At least 6 characters'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -108,10 +126,10 @@ const Register = () => {
           }
         </div>
         <div className="form-group">
-          <label>Username</label>
+          <label>Username (*)</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${objCheckInput.isValidUsername ? '' : 'is-invalid'}`}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           >
